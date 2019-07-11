@@ -58,10 +58,23 @@ export default class Home extends Component {
       // 포스트 요청에 따라 푸시요청??
       partner: "Ironman",
       matchComplete: true,
-      postStatus: true
-      // 상대가 있으면 true , default = false -> true 면 또 변경.
+      // 매칭완료이면 true , 매칭 전, 대기 중에는 false
+      postStatus: true,
+      // 상대가 편지를 보냈으면 true , default = false -> true 면 또 변경.
+      date: null
     };
   }
+
+  componentWillMount() {
+    if (this.state.postStatus) {
+      setInterval(() => {
+        this.setState({
+          date: new Date().toLocaleTimeString()
+        });
+      }, 1000);
+    }
+  }
+  // 일단 다 초로 계산해야하는가??
 
   componentDidMount() {
     if (this.state.matchComplete === true) {
@@ -78,7 +91,8 @@ export default class Home extends Component {
       subText,
       matchStatus,
       matchComplete,
-      partner
+      partner,
+      date
     } = this.state;
 
     if (pageto === 2) {
@@ -107,6 +121,10 @@ export default class Home extends Component {
           ) : (
             <Text style={styles.subtext}>하루 한 통, 마음을 전해보세요.</Text>
           )}
+        </Container>
+        <Text>{date}</Text>
+        <Container>
+          <Text style={styles.maintext}>{centerText}</Text>
         </Container>
 
         <Footer>
