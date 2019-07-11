@@ -5,7 +5,8 @@ import {
   Header,
   Footer,
   FooterTab,
-  Button
+  Button,
+  Icon
 } from "native-base";
 import { StyleSheet } from "react-native";
 //import BotNavi from './botNavi';
@@ -14,8 +15,7 @@ const styles = StyleSheet.create({
   toplogo: {
     paddingTop: "1.4%",
     marginTop: "5.7%",
-    backgroundColor: "black",
-    borderRadius: 20
+    backgroundColor: "black"
   },
   logotext: {
     paddingBottom: "3%",
@@ -35,21 +35,29 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 20
   },
-  bottom: {}
+  footer: {
+    backgroundColor: "black"
+  }
 });
 
 export default class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      centerText: "HELLO OWLS!"
+      centerText: "HELLO OWLS!",
+      subText: "당신의 펜팔친구를 찾아보세요!",
+      matchStatus: "매칭시작"
       // 매칭 버튼을 누르면 메인 텍스트와 서브 텍스트를 변경한다.
       // 포스트 요청에 따라 푸시요청??
     };
   }
 
+  // onPressMatch() {
+  //   ;
+  // }
+
   render() {
-    const { centerText } = this.state;
+    const { centerText, subText, matchStatus } = this.state;
     return (
       <Container>
         <Header style={styles.toplogo}>
@@ -58,12 +66,29 @@ export default class Home extends Component {
 
         <Container>
           <Text style={styles.maintext}>{centerText}</Text>
-          <Text style={styles.subtext}> 당신의 펜팔친구를 찾아보세요!</Text>
+          <Text style={styles.subtext}>{subText}</Text>
         </Container>
 
         <Footer>
           <FooterTab>
-            <Button />
+            <Button style={styles.footer}>
+              <Text>편지함</Text>
+            </Button>
+            <Button
+              style={styles.footer}
+              onPress={() => {
+                this.setState({
+                  centerText: "FIND FRIEND!",
+                  subText: "펜팔친구를 찾고 있어요!",
+                  matchStatus: "매칭 중"
+                });
+              }}
+            >
+              <Text>{matchStatus}</Text>
+            </Button>
+            <Button style={styles.footer}>
+              <Text>마이페이지</Text>
+            </Button>
           </FooterTab>
         </Footer>
       </Container>
