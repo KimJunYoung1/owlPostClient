@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { StyleSheet, View } from "react-native";
+import { Container } from "native-base";
+import SignIn from "./src/Screen/SignIn";
 
 export default class App extends Component {
   constructor(props) {
@@ -10,6 +11,10 @@ export default class App extends Component {
   }
   render() {
     const { logInStatus } = this.state;
-    return <View>{logInStatus === false ? <SignIn /> : <Home />}</View>;
+    return (
+      <Container>
+        <SignIn />
+      </Container>
+    );
   }
 }
