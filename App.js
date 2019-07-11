@@ -1,20 +1,17 @@
 import React, { Component } from "react";
-import { Container } from "native-base";
-import SignIn from "./src/Screen/SignIn";
-
+import { View } from "native-base";
+import Home from "./src/Screen/Home";
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      logInStatus: false
+      logInStatus: true
     };
   }
   render() {
     const { logInStatus } = this.state;
-    return (
-      <Container>
-        <SignIn />
-      </Container>
-    );
+    return <Home />;
   }
 }
+
+//{logInStatus === false ? <SignIn /> : <Home />}
