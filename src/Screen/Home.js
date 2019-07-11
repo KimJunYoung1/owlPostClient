@@ -5,7 +5,8 @@ import {
   Header,
   Footer,
   FooterTab,
-  Button
+  Button,
+  Icon
 } from "native-base";
 import { StyleSheet } from "react-native";
 //import BotNavi from './botNavi';
@@ -34,8 +35,7 @@ const styles = StyleSheet.create({
     marginTop: "3%",
     textAlign: "center",
     fontSize: 20
-  },
-  bottom: {}
+  }
 });
 
 export default class Home extends Component {
@@ -63,7 +63,15 @@ export default class Home extends Component {
 
         <Footer>
           <FooterTab>
-            <Button />
+            <Button>
+              <Text>편지함</Text>
+            </Button>
+            <Button>
+              <Text>매칭시작</Text>
+            </Button>
+            <Button>
+              <Text>마이페이지</Text>
+            </Button>
           </FooterTab>
         </Footer>
       </Container>
