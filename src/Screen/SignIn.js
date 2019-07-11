@@ -13,6 +13,33 @@ import {
 import { StyleSheet } from "react-native";
 
 export default class SignIn extends Component {
+  logInGetRequest() {
+    const email = this.email._root._lastNativeText;
+    const password = this.password._root._lastNativeText;
+    //TODO : 인풋창의 값을 받아와서 객체 형태로 만들어주기
+    if (email && password) {
+      const logInData = {
+        email: email,
+        password: password
+      };
+      console.log(logInData);
+      alert("등록되지 않은 정보 입니다.");
+
+      //TODO : 서버에 회원인지 아닌지 확인 요청(GET)을 하기
+      /*fetch(LOGINAPI, {
+        method: "GET",
+        body: JSON.stringify(logInData),
+        headers: { "Contents-Type": "application/json" }
+      }).then(res => {
+        if (statuscode === 200) {   // ==> 홈 화면 으로
+           } else if (statuscode === 201) { // ==> alert("등록되지 않은 정보 입니다.")창 띄우기
+      }
+    }); */
+    } else {
+      alert("아이디와 패스워드를 정확히 입력하세요");
+    }
+  }
+
   render() {
     return (
       <Container>
@@ -24,10 +51,20 @@ export default class SignIn extends Component {
         </Body>
         <Content>
           <Content style={styles.signinInput}>
-            <Input placeholder="e-mail" />
-            <Input placeholder="password" />
+            <Input
+              placeholder="e-mail"
+              ref={ref => {
+                this.email = ref;
+              }}
+            />
+            <Input
+              placeholder="password"
+              ref={ref => {
+                this.password = ref;
+              }}
+            />
           </Content>
-          <Button block>
+          <Button block onPress={this.logInGetRequest.bind(this)}>
             <Text>Sign In</Text>
           </Button>
         </Content>
