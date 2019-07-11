@@ -56,6 +56,14 @@ export default class Home extends Component {
     };
   }
 
+  componentDidMount() {
+    if (this.state.matchComplete === true) {
+      this.setState({
+        matchStatus: "편지 쓰기"
+      });
+    }
+  }
+
   render() {
     const { centerText, subText, matchStatus, matchComplete } = this.state;
     return (
