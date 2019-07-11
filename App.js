@@ -11,7 +11,7 @@ export default class App extends Component {
     super(props);
     this.state = {
       loading: true,
-      logInStatus: false // using for seperate TH(false) / HS(true)
+      logInStatus: true // using for seperate TH(false) / HS(true)
     };
   }
 
