@@ -6,28 +6,60 @@ import {
   Body,
   Input,
   Button,
-  Bottom
+  Footer,
+  FooterTab,
+  Icon
 } from "native-base";
+import { StyleSheet } from "react-native";
 
 export default class SignIn extends Component {
   render() {
     return (
       <Container>
-        <Body />
-        <Text>당신의 편지를 배달해드립니다</Text>
-        <Text>owlPost</Text>
+        <Body>
+          <Content style={styles.texts}>
+            <Text style={styles.text}>나만의 편지 배달부</Text>
+            <Text style={styles.text}>owlPost</Text>
+          </Content>
+        </Body>
         <Content>
-          <Input placeholder="e-mail" />
-          <Input placeholder="password" />
-          <Button>
+          <Content style={styles.signinInput}>
+            <Input placeholder="e-mail" />
+            <Input placeholder="password" />
+          </Content>
+          <Button block>
             <Text>Sign In</Text>
           </Button>
         </Content>
 
-        <Button>
-          <Text>Sign up</Text>
-        </Button>
+        <Footer>
+          <FooterTab>
+            <Button style={styles.signupbtn}>
+              <Text style={styles.signup}>회원가입</Text>
+            </Button>
+          </FooterTab>
+        </Footer>
       </Container>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  text: {
+    marginTop: "3%",
+    textAlign: "center",
+    fontSize: 40
+  },
+  texts: {
+    top: "50%"
+  },
+  signup: {
+    textDecorationLine: "underline"
+  },
+  signupbtn: {
+    backgroundColor: "black"
+  },
+  signinInput: {
+    textAlign: "center"
+  }
+});
