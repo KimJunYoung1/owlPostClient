@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View } from "native-base";
+import { View, Text } from "native-base";
 import SignIn from "./src/Screen/SignIn";
 import Home from "./src/Screen/Home";
 import { AppLoading } from "expo";
@@ -22,7 +22,7 @@ export default class App extends Component {
       ...Ionicons.font
     });
     this.setState({
-      loading: true
+      loading: false
     });
   }
 
