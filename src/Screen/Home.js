@@ -40,6 +40,11 @@ const styles = StyleSheet.create({
   },
   footer: {
     backgroundColor: "black"
+  },
+  timer: {
+    marginTop: "3%",
+    textAlign: "center",
+    fontSize: 17
   }
 });
 
@@ -61,19 +66,48 @@ export default class Home extends Component {
       // 매칭완료이면 true , 매칭 전, 대기 중에는 false
       postStatus: true,
       // 상대가 편지를 보냈으면 true , default = false -> true 면 또 변경.
-      date: null
+      date: null,
+      // 여기에 도착예정 시간과 현재시간을 계산한 카운터 값이 들어가거나 , 편지도착알림 텍스트가 띄워진다.
+      arriveTime: "23:00"
+      // get 요청으로 받을 값이 들어갈 예정.
     };
   }
 
   componentWillMount() {
-    if (this.state.postStatus) {
+    if (this.state.matchComplete && this.state.postStatus) {
       setInterval(() => {
-        this.setState({
-          date: new Date().toLocaleTimeString()
-        });
+        let times = this.state.arriveTime;
+        let today = new Date().toLocaleDateString();
+        let arrive = today + " " + times;
+        var deadline = new Date(arrive).getTime();
+        var now = new Date().getTime();
+
+        let t = deadline - now;
+        let days = Math.floor(t / (1000 * 60 * 60 * 24));
+        let hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        let minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+
+        if (t < 0) {
+          clearInterval();
+          this.setState({
+            date: "편지가 도착했습니다."
+          });
+        } else {
+          this.setState({
+            date:
+              "편지 도착까지, " +
+              days +
+              "일 " +
+              hours +
+              "시간 " +
+              minutes +
+              "분"
+          });
+        }
       }, 1000);
     }
   }
+
   // 일단 다 초로 계산해야하는가??
 
   componentDidMount() {
@@ -92,7 +126,8 @@ export default class Home extends Component {
       matchStatus,
       matchComplete,
       partner,
-      date
+      date,
+      postStatus
     } = this.state;
 
     if (pageto === 2) {
@@ -121,10 +156,9 @@ export default class Home extends Component {
           ) : (
             <Text style={styles.subtext}>하루 한 통, 마음을 전해보세요.</Text>
           )}
-        </Container>
-        <Text>{date}</Text>
-        <Container>
-          <Text style={styles.maintext}>{centerText}</Text>
+          {postStatus === true ? (
+            <Text style={styles.timer}>{date}</Text>
+          ) : null}
         </Container>
 
         <Footer>
