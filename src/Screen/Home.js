@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import Postbox from "./Postbox";
-import Send from "./Send";
-import Mypage from "./Mypage";
+// import Postbox from "./Postbox";
+// import Send from "./Send";
+// import Mypage from "./Mypage";
 import {
   Text,
   Container,
@@ -12,6 +12,7 @@ import {
   Icon
 } from "native-base";
 import { StyleSheet } from "react-native";
+import AwesomeAlert from "react-native-awesome-alerts";
 //import BotNavi from './botNavi';
 
 const styles = StyleSheet.create({
@@ -40,6 +41,11 @@ const styles = StyleSheet.create({
   },
   footer: {
     backgroundColor: "black"
+  },
+  timer: {
+    marginTop: "3%",
+    textAlign: "center",
+    fontSize: 17
   }
 });
 
@@ -58,10 +64,63 @@ export default class Home extends Component {
       // 포스트 요청에 따라 푸시요청??
       partner: "Ironman",
       matchComplete: true,
-      postStatus: true
-      // 상대가 있으면 true , default = false -> true 면 또 변경.
+      // 매칭완료이면 true , 매칭 전, 대기 중에는 false
+      postStatus: true,
+      // 상대가 편지를 보냈으면 true , default = false -> true 면 또 변경.
+      arriveTime: "21:00",
+      // get 요청으로 받을 값이 들어갈 예정.
+      date: null,
+      // 여기에 도착예정 시간과 현재시간을 계산한 카운터 값이 들어가거나 , 편지도착알림 텍스트가 띄워진다.
+      showAlert: false
+      // true 일 때 alert , 편지시간이 되면 true로 되고 date는 다시 null.
     };
   }
+
+  hideAlert = () => {
+    this.setState({
+      showAlert: false
+    });
+  };
+
+  componentWillMount() {
+    if (this.state.matchComplete && this.state.postStatus) {
+      let x = setInterval(() => {
+        let times = this.state.arriveTime;
+        let today = new Date().toLocaleDateString();
+        let arrive = today + " " + times;
+        var deadline = new Date(arrive).getTime();
+        var now = new Date().getTime();
+
+        let t = deadline - now;
+        let days = Math.floor(t / (1000 * 60 * 60 * 24));
+        let hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        let minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+
+        if (t <= 0) {
+          clearInterval(x);
+          this.setState({
+            date: null
+          });
+          this.setState({
+            showAlert: true
+          });
+        } else {
+          this.setState({
+            date:
+              "편지 도착까지, " +
+              days +
+              "일 " +
+              hours +
+              "시간 " +
+              minutes +
+              "분"
+          });
+        }
+      }, 1000);
+    }
+  }
+
+  // 일단 다 초로 계산해야하는가??
 
   componentDidMount() {
     if (this.state.matchComplete === true) {
@@ -78,16 +137,20 @@ export default class Home extends Component {
       subText,
       matchStatus,
       matchComplete,
-      partner
+      partner,
+      date,
+      postStatus,
+      showAlert
     } = this.state;
 
-    if (pageto === 2) {
-      return <Postbox />;
-    } else if (pageto === 3) {
-      return <Mypage />;
-    } else if (pageto === 4) {
-      return <Send />;
-    }
+    const { navigation } = this.props;
+    // if (pageto === 2) {
+    //   return <Postbox />;
+    // } else if (pageto === 3) {
+    //   return <Mypage />;
+    // } else if (pageto === 4) {
+    //   return <Send />;
+    // }
 
     return (
       <Container>
@@ -107,16 +170,35 @@ export default class Home extends Component {
           ) : (
             <Text style={styles.subtext}>하루 한 통, 마음을 전해보세요.</Text>
           )}
+          {postStatus === true ? (
+            <Text style={styles.timer}>{date}</Text>
+          ) : null}
         </Container>
-
+        <AwesomeAlert
+          show={showAlert}
+          showProgress={false}
+          title="편지가 도착했어요!"
+          message="Postbox에서 확인해보세요!"
+          closeOnTouchOutside={true}
+          closeOnHardwareBackPress={false}
+          showCancelButton={false}
+          showConfirmButton={true}
+          cancelText=""
+          confirmText="📩"
+          confirmButtonColor="black"
+          onCancelPressed={() => {
+            this.hideAlert();
+          }}
+          onConfirmPressed={() => {
+            this.hideAlert();
+          }}
+        />
         <Footer>
           <FooterTab>
             <Button
               style={styles.footer}
               onPress={() => {
-                this.setState({
-                  pageto: 2
-                });
+                navigation.navigate("Postbox");
               }}
             >
               <Text>편지함</Text>
@@ -131,9 +213,7 @@ export default class Home extends Component {
                     matchStatus: "매칭 중"
                   });
                 } else {
-                  this.setState({
-                    pageto: 4
-                  });
+                  navigation.navigate("Send");
                 }
               }}
             >
@@ -142,9 +222,7 @@ export default class Home extends Component {
             <Button
               style={styles.footer}
               onPress={() => {
-                this.setState({
-                  pageto: 3
-                });
+                navigation.navigate("Mypage");
               }}
             >
               <Text>마이페이지</Text>
@@ -155,3 +233,7 @@ export default class Home extends Component {
     );
   }
 }
+
+/*
+
+*/

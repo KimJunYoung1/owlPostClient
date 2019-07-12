@@ -5,6 +5,7 @@ import Home from "./src/Screen/Home";
 import { AppLoading } from "expo";
 import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
+import NaviApp from "./src/Screen/NaviApp";
 
 export default class App extends Component {
   constructor(props) {
@@ -33,6 +34,6 @@ export default class App extends Component {
       return <AppLoading />;
     }
 
-    return logInStatus === false ? <SignIn /> : <Home />;
+    return logInStatus === false ? <SignIn /> : <NaviApp />;
   }
 }
