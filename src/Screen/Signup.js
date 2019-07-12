@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export default class SignUp extends Component {
+export default class Signup extends Component {
   constructor(props) {
     super(props);
     this.state = {
