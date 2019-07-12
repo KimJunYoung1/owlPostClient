@@ -5,7 +5,9 @@ import {
   Header,
   Footer,
   FooterTab,
-  Button
+  Button,
+  Icon,
+  Body
 } from "native-base";
 
 import { StyleSheet } from "react-native";
@@ -26,11 +28,14 @@ const styles = StyleSheet.create({
   maintext: {
     fontSize: 30,
     fontWeight: "bold",
-    textAlign: "center",
-    marginTop: "50%"
+    textAlign: "center"
   },
   footer: {
     backgroundColor: "black"
+  },
+  owlsInfo: {
+    fontSize: 15,
+    textAlign: "center"
   }
 });
 export default class Mypage extends Component {
@@ -44,10 +49,29 @@ export default class Mypage extends Component {
         <Header style={styles.toplogo}>
           <Text style={styles.logotext}>owlPost</Text>
         </Header>
-        <Text style={styles.maintext}>this is Mypage</Text>
-        <Container>
-          <Text>my page(fetch get some info)</Text>
-        </Container>
+
+        <Text style={styles.maintext}>내 부엉이 정보</Text>
+        <Text style={styles.owlsInfo}>
+          'NickName' 님으로 부터 받은 편지 : 0 통{" "}
+        </Text>
+        <Text style={styles.owlsInfo}>'NickName' 님에게 보낸 편지 : 0 통 </Text>
+
+        <Body>
+          <Container>
+            <Button transparent>
+              <Text>관계 끊기</Text>
+            </Button>
+            <Button transparent>
+              <Text>신고 / 차단</Text>
+            </Button>
+            <Button transparent>
+              <Text>LOG OUT</Text>
+            </Button>
+            <Button transparent>
+              <Text>회원탈퇴</Text>
+            </Button>
+          </Container>
+        </Body>
         <Footer>
           <FooterTab>
             <Button
@@ -56,7 +80,7 @@ export default class Mypage extends Component {
                 navigation.navigate("Home");
               }}
             >
-              <Text>Main</Text>
+              <Text style={{ fontSize: 15 }}>메인화면으로 이동</Text>
             </Button>
           </FooterTab>
         </Footer>
