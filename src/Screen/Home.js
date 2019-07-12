@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import Postbox from "./Postbox";
-import Send from "./Send";
-import Mypage from "./Mypage";
+// import Postbox from "./Postbox";
+// import Send from "./Send";
+// import Mypage from "./Mypage";
 import {
   Text,
   Container,
@@ -67,7 +67,7 @@ export default class Home extends Component {
       // 매칭완료이면 true , 매칭 전, 대기 중에는 false
       postStatus: true,
       // 상대가 편지를 보냈으면 true , default = false -> true 면 또 변경.
-      arriveTime: "13:00",
+      arriveTime: "21:00",
       // get 요청으로 받을 값이 들어갈 예정.
       date: null,
       // 여기에 도착예정 시간과 현재시간을 계산한 카운터 값이 들어가거나 , 편지도착알림 텍스트가 띄워진다.
@@ -143,13 +143,14 @@ export default class Home extends Component {
       showAlert
     } = this.state;
 
-    if (pageto === 2) {
-      return <Postbox />;
-    } else if (pageto === 3) {
-      return <Mypage />;
-    } else if (pageto === 4) {
-      return <Send />;
-    }
+    const { navigation } = this.props;
+    // if (pageto === 2) {
+    //   return <Postbox />;
+    // } else if (pageto === 3) {
+    //   return <Mypage />;
+    // } else if (pageto === 4) {
+    //   return <Send />;
+    // }
 
     return (
       <Container>
@@ -197,9 +198,7 @@ export default class Home extends Component {
             <Button
               style={styles.footer}
               onPress={() => {
-                this.setState({
-                  pageto: 2
-                });
+                navigation.navigate("Postbox");
               }}
             >
               <Text>편지함</Text>
@@ -214,9 +213,7 @@ export default class Home extends Component {
                     matchStatus: "매칭 중"
                   });
                 } else {
-                  this.setState({
-                    pageto: 4
-                  });
+                  navigation.navigate("Send");
                 }
               }}
             >
@@ -225,9 +222,7 @@ export default class Home extends Component {
             <Button
               style={styles.footer}
               onPress={() => {
-                this.setState({
-                  pageto: 3
-                });
+                navigation.navigate("Mypage");
               }}
             >
               <Text>마이페이지</Text>
