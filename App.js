@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { View, Text } from "native-base";
+import Signup from "./src/Screen/Signup";
 import SignIn from "./src/Screen/SignIn";
 import Home from "./src/Screen/Home";
 import { AppLoading } from "expo";
@@ -12,7 +13,8 @@ export default class App extends Component {
     super(props);
     this.state = {
       loading: true,
-      logInStatus: false // using for seperate TH(false) / HS(true)
+      logInStatus: false, // using for seperate TH(false) / HS(true)
+      navigation: false
     };
   }
 
@@ -27,13 +29,27 @@ export default class App extends Component {
     });
   }
 
+  navToSignUp() {
+    this.setState({
+      navigation: true
+    });
+  }
+
   render() {
     const { logInStatus } = this.state;
-
+    const navToSignUp = this.navToSignUp;
     if (this.state.loading) {
       return <AppLoading />;
     }
 
-    return logInStatus === false ? <SignIn /> : <NaviApp />;
+    return logInStatus === false ? (
+      this.state.navigation ? (
+        <Signup />
+      ) : (
+        <SignIn navToSignUp={navToSignUp.bind(this)} />
+      )
+    ) : (
+      <Home />
+    );
   }
 }

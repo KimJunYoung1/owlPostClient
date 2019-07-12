@@ -41,6 +41,8 @@ export default class SignIn extends Component {
   }
 
   render() {
+    console.log(this.props);
+    const { navToSignUp } = this.props;
     return (
       <Container>
         <Body>
@@ -62,6 +64,7 @@ export default class SignIn extends Component {
               ref={ref => {
                 this.password = ref;
               }}
+              secureTextEntry={true}
             />
           </Content>
           <Button block onPress={this.logInGetRequest.bind(this)}>
@@ -72,7 +75,9 @@ export default class SignIn extends Component {
         <Footer>
           <FooterTab>
             <Button style={styles.signupbtn}>
-              <Text style={styles.signup}>회원가입</Text>
+              <Text style={styles.signup} onPress={navToSignUp}>
+                회원가입
+              </Text>
             </Button>
           </FooterTab>
         </Footer>
