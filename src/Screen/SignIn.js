@@ -25,6 +25,7 @@ export default class SignIn extends Component {
       console.log(logInData);
       alert("등록되지 않은 정보 입니다.");
 
+      this.props.navigation.navigate("Home");
       //TODO : 서버에 회원인지 아닌지 확인 요청(GET)을 하기
       /*fetch(LOGINAPI, {
         method: "GET",
@@ -41,8 +42,8 @@ export default class SignIn extends Component {
   }
 
   render() {
-    console.log(this.props);
-    const { navToSignUp } = this.props;
+    const { navigation } = this.props;
+
     return (
       <Container>
         <Body>
@@ -74,10 +75,11 @@ export default class SignIn extends Component {
 
         <Footer>
           <FooterTab>
-            <Button style={styles.signupbtn}>
-              <Text style={styles.signup} onPress={navToSignUp}>
-                회원가입
-              </Text>
+            <Button
+              style={styles.signupbtn}
+              onPress={() => navigation.navigate("Signup")}
+            >
+              <Text style={styles.signup}>회원가입</Text>
             </Button>
           </FooterTab>
         </Footer>

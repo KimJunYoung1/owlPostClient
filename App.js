@@ -7,14 +7,14 @@ import { AppLoading } from "expo";
 import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
 import NaviApp from "./src/Screen/NaviApp";
+import SignNavi from "./src/Screen/SignNavi";
 
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: true,
-      logInStatus: false, // using for seperate TH(false) / HS(true)
-      navigation: false
+      logInStatus: false // using for seperate TH(false) / HS(true)
     };
   }
 
@@ -29,27 +29,13 @@ export default class App extends Component {
     });
   }
 
-  navToSignUp() {
-    this.setState({
-      navigation: true
-    });
-  }
-
   render() {
     const { logInStatus } = this.state;
-    const navToSignUp = this.navToSignUp;
+
     if (this.state.loading) {
       return <AppLoading />;
     }
 
-    return logInStatus === false ? (
-      this.state.navigation ? (
-        <Signup />
-      ) : (
-        <SignIn navToSignUp={navToSignUp.bind(this)} />
-      )
-    ) : (
-      <Home />
-    );
+    return logInStatus === false ? <SignNavi /> : <NaviApp />;
   }
 }

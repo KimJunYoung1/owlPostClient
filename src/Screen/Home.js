@@ -144,13 +144,6 @@ export default class Home extends Component {
     } = this.state;
 
     const { navigation } = this.props;
-    // if (pageto === 2) {
-    //   return <Postbox />;
-    // } else if (pageto === 3) {
-    //   return <Mypage />;
-    // } else if (pageto === 4) {
-    //   return <Send />;
-    // }
 
     return (
       <Container>
