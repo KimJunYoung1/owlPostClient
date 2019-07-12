@@ -23,7 +23,7 @@ export default class App extends Component {
       ...Ionicons.font
     });
     this.setState({
-      loading: false
+      loading: true
     });
   }
 
