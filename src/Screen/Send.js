@@ -8,7 +8,7 @@ import {
   Button
 } from "native-base";
 
-import { StyleSheet, TextInput } from "react-native";
+import { StyleSheet, TextInput, ScrollView } from "react-native";
 
 const styles = StyleSheet.create({
   toplogo: {
@@ -49,12 +49,14 @@ export default class Send extends Component {
           <Text style={styles.logotext}>owlPost</Text>
         </Header>
         <Text style={styles.toptext}>To. 'NickName'</Text>
-        <TextInput
-          style={styles.lettertext}
-          editable={true}
-          maxLength={400}
-          multiline={true}
-        />
+        <ScrollView>
+          <TextInput
+            style={styles.lettertext}
+            editable={true}
+            maxLength={400}
+            multiline={true}
+          />
+        </ScrollView>
         <Container>
           <Text>----------------------------------</Text>
         </Container>
