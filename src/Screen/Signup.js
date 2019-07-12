@@ -281,7 +281,15 @@ export default class Signup extends Component {
     Alert.alert("", "회원가입을 축하합니다!", [
       {
         text: "SignUP",
-        onPress: () => Alert.alert("", "회원가입완료! 메인화면으로 이동합니다.")
+        onPress: () =>
+          Alert.alert("", "회원가입완료! 메인화면으로 이동합니다.", [
+            {
+              text: "SignUp",
+              onPress: () => {
+                this.props.navigation.navigate("Home");
+              }
+            }
+          ])
       }
     ]);
 
