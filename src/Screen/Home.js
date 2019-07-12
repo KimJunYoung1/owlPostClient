@@ -12,6 +12,7 @@ import {
   Icon
 } from "native-base";
 import { StyleSheet } from "react-native";
+import AwesomeAlert from "react-native-awesome-alerts";
 //import BotNavi from './botNavi';
 
 const styles = StyleSheet.create({
@@ -66,16 +67,24 @@ export default class Home extends Component {
       // 매칭완료이면 true , 매칭 전, 대기 중에는 false
       postStatus: true,
       // 상대가 편지를 보냈으면 true , default = false -> true 면 또 변경.
+      arriveTime: "13:00",
+      // get 요청으로 받을 값이 들어갈 예정.
       date: null,
       // 여기에 도착예정 시간과 현재시간을 계산한 카운터 값이 들어가거나 , 편지도착알림 텍스트가 띄워진다.
-      arriveTime: "23:00"
-      // get 요청으로 받을 값이 들어갈 예정.
+      showAlert: false
+      // true 일 때 alert , 편지시간이 되면 true로 되고 date는 다시 null.
     };
   }
 
+  hideAlert = () => {
+    this.setState({
+      showAlert: false
+    });
+  };
+
   componentWillMount() {
     if (this.state.matchComplete && this.state.postStatus) {
-      setInterval(() => {
+      let x = setInterval(() => {
         let times = this.state.arriveTime;
         let today = new Date().toLocaleDateString();
         let arrive = today + " " + times;
@@ -87,10 +96,13 @@ export default class Home extends Component {
         let hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         let minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
 
-        if (t < 0) {
-          clearInterval();
+        if (t <= 0) {
+          clearInterval(x);
           this.setState({
-            date: "편지가 도착했습니다."
+            date: null
+          });
+          this.setState({
+            showAlert: true
           });
         } else {
           this.setState({
@@ -127,7 +139,8 @@ export default class Home extends Component {
       matchComplete,
       partner,
       date,
-      postStatus
+      postStatus,
+      showAlert
     } = this.state;
 
     if (pageto === 2) {
@@ -160,7 +173,25 @@ export default class Home extends Component {
             <Text style={styles.timer}>{date}</Text>
           ) : null}
         </Container>
-
+        <AwesomeAlert
+          show={showAlert}
+          showProgress={false}
+          title="편지가 도착했어요!"
+          message="Postbox에서 확인해보세요!"
+          closeOnTouchOutside={true}
+          closeOnHardwareBackPress={false}
+          showCancelButton={false}
+          showConfirmButton={true}
+          cancelText=""
+          confirmText="📩"
+          confirmButtonColor="black"
+          onCancelPressed={() => {
+            this.hideAlert();
+          }}
+          onConfirmPressed={() => {
+            this.hideAlert();
+          }}
+        />
         <Footer>
           <FooterTab>
             <Button
@@ -207,3 +238,7 @@ export default class Home extends Component {
     );
   }
 }
+
+/*
+
+*/
