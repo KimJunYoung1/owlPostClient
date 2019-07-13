@@ -7,7 +7,9 @@ import {
   FooterTab,
   Button,
   Icon,
-  Body
+  Body,
+  ListItem,
+  List
 } from "native-base";
 
 import { StyleSheet } from "react-native";
@@ -26,6 +28,7 @@ const styles = StyleSheet.create({
     color: "white"
   },
   maintext: {
+    top: 20,
     fontSize: 30,
     fontWeight: "bold",
     textAlign: "center"
@@ -34,15 +37,24 @@ const styles = StyleSheet.create({
     backgroundColor: "black"
   },
   owlsInfo: {
-    fontSize: 15,
+    fontSize: 18,
+    top: "14%",
     textAlign: "center"
+  },
+  btns: {
+    top: "20%"
+  },
+  btntext: {
+    fontSize: 20,
+    color: "white"
+  },
+  btn: {
+    flex: 0.3,
+    marginBottom: 15
   }
 });
 
 export default class Mypage extends Component {
-  componentWillUnmount() {
-    this.props.navigation.navigate("SignIn");
-  }
   render() {
     const { navigation } = this.props;
     return (
@@ -51,27 +63,34 @@ export default class Mypage extends Component {
           <Text style={styles.logotext}>owlPost</Text>
         </Header>
 
-        <Text style={styles.maintext}>내 부엉이 정보</Text>
+        <Text style={styles.maintext}>myOwls</Text>
         <Text style={styles.owlsInfo}>
           'NickName' 님으로 부터 받은 편지 : 0 통{" "}
         </Text>
         <Text style={styles.owlsInfo}>'NickName' 님에게 보낸 편지 : 0 통 </Text>
 
-        <Body>
-          <Container>
-            <Button transparent>
-              <Text>관계 끊기</Text>
+        <Body style={styles.btns}>
+          <List>
+            <Button rounded dark style={styles.btn}>
+              <Text style={styles.btntext}>관계 끊기</Text>
             </Button>
-            <Button transparent>
-              <Text>신고 / 차단</Text>
+            <Button rounded dark style={styles.btn}>
+              <Text style={styles.btntext}>신고/차단</Text>
             </Button>
-            <Button transparent onPress={this.componentWillUnmount.bind(this)}>
-              <Text>LOG OUT</Text>
+            <Button
+              rounded
+              dark
+              onPress={() => {
+                navigation.goBack();
+              }}
+              style={styles.btn}
+            >
+              <Text style={styles.btntext}>LOG OUT</Text>
             </Button>
-            <Button transparent>
-              <Text>회원탈퇴</Text>
+            <Button rounded dark style={styles.btn}>
+              <Text style={styles.btntext}>회원 탈퇴</Text>
             </Button>
-          </Container>
+          </List>
         </Body>
         <Footer>
           <FooterTab>
