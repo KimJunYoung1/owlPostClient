@@ -8,12 +8,9 @@ import {
   Button
 } from "native-base";
 
-import {
-  StyleSheet,
-  TextInput,
-  ScrollView,
-  KeyboardAvoidingView
-} from "react-native";
+import { StyleSheet, TextInput, ScrollView } from "react-native";
+
+import AwesomeAlert from "react-native-awesome-alerts";
 
 const styles = StyleSheet.create({
   toplogo: {
@@ -44,21 +41,27 @@ const styles = StyleSheet.create({
   }
 });
 export default class Send extends Component {
-  // constructor(props) {
-  //   super(props)
-  //   this.state = {
-  //     yPos: 0
-  //   };
-  // }
-
-  handleScroll(event) {
-    this.setState({
-      yPos: event.nativeEvent.contentOffset.y
-    });
+  constructor(props) {
+    super(props);
+    this.state = { showAlert: false };
   }
+
+  showAlert = () => {
+    this.setState({
+      showAlert: true
+    });
+  };
+
+  hideAlert = () => {
+    this.setState({
+      showAlert: false
+    });
+  };
 
   render() {
     const { navigation } = this.props;
+    const { showAlert } = this.state;
+
     return (
       <Container
       // 닉네임에 get 요청 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
@@ -66,24 +69,36 @@ export default class Send extends Component {
         <Header style={styles.toplogo}>
           <Text style={styles.logotext}>owlPost</Text>
         </Header>
-
         <Text style={styles.toptext}>To. 'NickName'</Text>
-        <ScrollView
-        // onScroll={this.handleScroll.bind(this)}
-        // scrollEventThrottle={16}
-        >
+
+        <ScrollView>
           <TextInput
             style={styles.lettertext}
             editable={true}
-            maxLength={400}
+            maxLength={1000}
             multiline={true}
             autoFocus={true}
           />
         </ScrollView>
-
-        <Container>
-          <Text>----------------------------------</Text>
-        </Container>
+        <AwesomeAlert
+          show={showAlert}
+          showProgress={false}
+          title="편지를 보내시겠습니까?"
+          message="I have a message for you!"
+          closeOnTouchOutside={true}
+          closeOnHardwareBackPress={false}
+          showCancelButton={true}
+          showConfirmButton={true}
+          cancelText="No, cancel"
+          confirmText="Yes, send it"
+          confirmButtonColor="black"
+          onCancelPressed={() => {
+            this.hideAlert();
+          }}
+          onConfirmPressed={() => {
+            this.hideAlert();
+          }}
+        />
 
         <Footer>
           <FooterTab>
@@ -95,11 +110,17 @@ export default class Send extends Component {
             >
               <Text>Main</Text>
             </Button>
+            <Button
+              style={styles.footer}
+              onPress={() => {
+                this.showAlert();
+              }}
+            >
+              <Text>Send</Text>
+            </Button>
           </FooterTab>
         </Footer>
       </Container>
     );
   }
 }
-
-//가로 22 세로 18
