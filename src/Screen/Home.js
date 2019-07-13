@@ -63,7 +63,7 @@ export default class Home extends Component {
       // 상대와 서로를 추가한다.
       // 포스트 요청에 따라 푸시요청??
       partner: "Ironman",
-      matchComplete: false,
+      matchComplete: true,
       // 매칭완료이면 true , 매칭 전, 대기 중에는 false
       postStatus: true,
       // 상대가 편지를 보냈으면 true , default = false -> true 면 또 변경.
