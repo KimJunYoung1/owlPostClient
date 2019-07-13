@@ -60,7 +60,8 @@ export default class Signup extends Component {
       radio1Select: false,
       radio2Select: false,
       radio3Select: false,
-      radio4Select: false
+      radio4Select: false,
+      stateComparePassword: null
     };
   }
 
@@ -115,27 +116,34 @@ export default class Signup extends Component {
   }
 
   //[x]2. password 매칭확인
-  checkPasswordMatch(e) {
-    const password = this.password._root._lastNativeText;
-    const comparePassword = e.nativeEvent.text;
-    //console.log(password === comparePassword);
-    if (password === comparePassword) {
-      this.setState({
-        statusPasswordMatch: true,
-        statePassword: password
-      });
-    } else if (!comparePassword.length) {
-      this.setState({
-        statusPasswordMatch: null,
-        statePassword: null
-      });
-    } else {
-      this.setState({
-        statusPasswordMatch: false,
-        statePassword: null
-      });
-    }
-  }
+  // changePassword(e) {
+  //   const password = e.nativeEvent.text;
+  //   console.log(password);
+  //   this.setState({
+  //     statePassword: password
+  //   });
+  // }
+  // checkPasswordMatch(e) {
+  //   const password = this.state.statePassword;
+  //   const comparePassword = e.nativeEvent.text;
+  //   console.log(password, comparePassword);
+  //   if (password === comparePassword) {
+  //     this.setState({
+  //       statusPasswordMatch: true,
+  //       statePassword: password
+  //     });
+  //   } else if (!comparePassword.length) {
+  //     this.setState({
+  //       statusPasswordMatch: null,
+  //       statePassword: null
+  //     });
+  //   } else {
+  //     this.setState({
+  //       statusPasswordMatch: false,
+  //       statePassword: password
+  //     });
+  //   }
+  // }
 
   //[x] 3. 닉네임 중복확인
   checkSameNickName() {
@@ -305,8 +313,8 @@ export default class Signup extends Component {
     function truthy(currVal) {
       return currVal === true;
     }
-    console.log(body);
-    console.log(status.every(truthy));
+    console.log(statusPasswordMatch);
+    //console.log(status.every(truthy));
 
     Alert.alert("", "회원가입을 축하합니다!", [
       {
@@ -367,12 +375,16 @@ export default class Signup extends Component {
 
     //패스워드가 매칭여부에 따라 메시지 변화
     let matchMsg;
-    if (this.state.statusPasswordMatch) {
-      matchMsg = "패스워드 일치";
-    } else if (this.state.statusPasswordMatch === null) {
+    let passwordMatch;
+    console.log(this.state.statePassword, this.state.stateComparePassword);
+    if (!this.state.statePassword || !this.state.stateComparePassword) {
       matchMsg = "";
+    } else if (this.state.statePassword === this.state.stateComparePassword) {
+      matchMsg = "패스워드 일치";
+      passwordMatch = true;
     } else {
       matchMsg = "패스워드 불 일치";
+      passwordMatch = false;
     }
 
     return (
@@ -380,7 +392,6 @@ export default class Signup extends Component {
         <Header style={styles.toplogo}>
           <Text style={styles.logotext}>owlPost</Text>
         </Header>
-        <Icon name="backspace" onPress={() => navigation.navigate("SignIn")} />
         <Content>
           {/*e-mail*/}
           <Content>
@@ -408,23 +419,49 @@ export default class Signup extends Component {
           <Content>
             <ListItem>
               <Input
-                ref={ref => (this.password = ref)}
+                onChange={e => {
+                  const password = e.nativeEvent.text;
+                  const ComparePassword = this.state.stateComparePassword;
+                  console.log(password);
+                  if (password === ComparePassword) {
+                    this.setState({
+                      statusPasswordMatch: true,
+                      statePassword: password
+                    });
+                  } else {
+                    this.setState({
+                      statePassword: password,
+                      statusPasswordMatch: false
+                    });
+                  }
+                }}
                 placeholder="password"
                 secureTextEntry={true}
               />
             </ListItem>
             <ListItem>
               <Input
-                onChange={this.checkPasswordMatch.bind(this)}
+                onChange={e => {
+                  const ComparePassword = e.nativeEvent.text;
+                  const password = this.state.statePassword;
+                  console.log(password, ComparePassword);
+                  if (password === ComparePassword) {
+                    this.setState({
+                      statusPasswordMatch: true,
+                      stateComparePassword: ComparePassword
+                    });
+                  } else {
+                    this.setState({
+                      stateComparePassword: ComparePassword,
+                      statusPasswordMatch: false
+                    });
+                  }
+                }}
                 placeholder="password 재확인"
                 secureTextEntry={true}
               />
               <Text
-                style={
-                  this.state.statusPasswordMatch
-                    ? { color: "green" }
-                    : { color: "red" }
-                }
+                style={passwordMatch ? { color: "green" } : { color: "red" }}
               >
                 {matchMsg}
               </Text>
@@ -547,7 +584,10 @@ export default class Signup extends Component {
         {/*TODO: 모든 조건을 갖춘 데이터를 db스키마 형태로 보낼것*/}
         <Footer>
           <FooterTab>
-            <Button onPress={this.compelteSignUp.bind(this)}>
+            <Button
+              style={{ backgroundColor: "black" }}
+              onPress={this.compelteSignUp.bind(this)}
+            >
               <Text style={{ fontSize: 15 }}>가입완료</Text>
             </Button>
           </FooterTab>
