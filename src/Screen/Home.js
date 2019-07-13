@@ -1,7 +1,4 @@
 import React, { Component } from "react";
-// import Postbox from "./Postbox";
-// import Send from "./Send";
-// import Mypage from "./Mypage";
 import {
   Text,
   Container,
@@ -13,7 +10,6 @@ import {
 } from "native-base";
 import { StyleSheet } from "react-native";
 import AwesomeAlert from "react-native-awesome-alerts";
-//import BotNavi from './botNavi';
 
 const styles = StyleSheet.create({
   toplogo: {
@@ -53,8 +49,6 @@ export default class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pageto: 1,
-      // 1 = home , 2 = postbox , 3 = mypage , 4 = 편지쓰기
       centerText: "HELLO OWLS!",
       subText: "당신의 펜팔친구를 찾아보세요!",
       matchStatus: "매칭시작",
@@ -67,7 +61,7 @@ export default class Home extends Component {
       // 매칭완료이면 true , 매칭 전, 대기 중에는 false
       postStatus: true,
       // 상대가 편지를 보냈으면 true , default = false -> true 면 또 변경.
-      arriveTime: "21:00",
+      arriveTime: "15:00",
       // get 요청으로 받을 값이 들어갈 예정.
       date: null,
       // 여기에 도착예정 시간과 현재시간을 계산한 카운터 값이 들어가거나 , 편지도착알림 텍스트가 띄워진다.
@@ -120,8 +114,6 @@ export default class Home extends Component {
     }
   }
 
-  // 일단 다 초로 계산해야하는가??
-
   componentDidMount() {
     if (this.state.matchComplete === true) {
       this.setState({
@@ -129,10 +121,9 @@ export default class Home extends Component {
       });
     }
   }
-  ßß;
+
   render() {
     const {
-      pageto,
       centerText,
       subText,
       matchStatus,
