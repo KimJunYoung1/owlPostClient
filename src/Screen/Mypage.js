@@ -38,9 +38,10 @@ const styles = StyleSheet.create({
     textAlign: "center"
   }
 });
+
 export default class Mypage extends Component {
-  constructor(props) {
-    super(props);
+  componentWillUnmount() {
+    this.props.navigation.navigate("SignIn");
   }
   render() {
     const { navigation } = this.props;
@@ -64,7 +65,7 @@ export default class Mypage extends Component {
             <Button transparent>
               <Text>신고 / 차단</Text>
             </Button>
-            <Button transparent>
+            <Button transparent onPress={this.componentWillUnmount.bind(this)}>
               <Text>LOG OUT</Text>
             </Button>
             <Button transparent>
@@ -77,7 +78,7 @@ export default class Mypage extends Component {
             <Button
               style={styles.footer}
               onPress={() => {
-                navigation.navigate("Home");
+                navigation.goBack();
               }}
             >
               <Text style={{ fontSize: 15 }}>메인화면으로 이동</Text>

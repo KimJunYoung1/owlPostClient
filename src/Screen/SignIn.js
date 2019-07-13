@@ -10,7 +10,7 @@ import {
   FooterTab,
   Icon
 } from "native-base";
-import { StyleSheet } from "react-native";
+import { StyleSheet, KeyboardAvoidingView } from "react-native";
 
 export default class SignIn extends Component {
   logInGetRequest() {
@@ -27,6 +27,7 @@ export default class SignIn extends Component {
 
       this.props.navigation.navigate("Home");
       //TODO : 서버에 회원인지 아닌지 확인 요청(GET)을 하기
+
       /*fetch(LOGINAPI, {
         method: "GET",
         body: JSON.stringify(logInData),
@@ -72,7 +73,6 @@ export default class SignIn extends Component {
             <Text>Sign In</Text>
           </Button>
         </Content>
-
         <Footer>
           <FooterTab>
             <Button

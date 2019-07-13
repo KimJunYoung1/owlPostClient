@@ -23,6 +23,18 @@ import { StyleSheet, Alert } from "react-native";
 const styles = StyleSheet.create({
   text: {
     flex: 1
+  },
+  toplogo: {
+    paddingTop: "1.4%",
+    marginTop: "5.7%",
+    backgroundColor: "black"
+  },
+  logotext: {
+    paddingBottom: "3%",
+    fontSize: 30,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "white"
   }
 });
 
@@ -159,12 +171,12 @@ export default class Signup extends Component {
         })*/
     } else {
       //TODO: 빈칸으로 넘기지 않도록 조건 추가
-      Alert.alert("", "부엉이의 이름을 작성해주셔야해요");
+      Alert.alert("", "닉네임을 작성해주셔야해요");
     }
   }
   doNotStoreNickName(e) {
     const NickName = e.nativeEvent.text;
-    console.log(NickName);
+    //console.log(NickName);
     this.setState({
       stateNickName: NickName,
       statusNickName: false
@@ -214,7 +226,7 @@ export default class Signup extends Component {
   onRadioBtn3Click() {
     if (!this.state.radio4Select) {
       this.setState({
-        radio3elect: !this.radio3Select,
+        radio3Select: !this.radio3Select,
         statusPartner: true,
         statePartner: true
       });
@@ -311,37 +323,39 @@ export default class Signup extends Component {
       }
     ]);
 
-    /*  if (status.every(truthy)) {
-      fetch(SIGIN_UP_API, {
-        method: "POST",
-        body: JSON.stringify(body),
-        headers: { "Contents-Type": "applsication/json" }
-      }).then(res => {
-        if (resStatus === 200) {
-          Alert.alert("", "회원가입을 축하합니다!", [
-            {
-              text: "SignUP",
-              onPress: () => {
-                fetch(LOGIN_API, {
-                  method: "GET",
-                  body: JSON.stringify({
-                    email: this.state.statusEmail,
-                    password: this.state.statePassword
-                  }),
-                  headers: { "Contents-Type": "applsication/json" }
-                }).then(res => {
-                  //HOME화면으로 이동
-                });
-              }
-            }
-          ]);
-        }
-      });
-    } else {
-      Alert.alert("", "비밀번호가 일치여부, 중복확인여부 확인필요");
-    }*/
+    //if (status.every(truthy)) {
+    //fetch(SIGINUP_API + "/user/signup", {
+    //  method: "POST",
+    //  body: JSON.stringify(body),
+    //  headers: { "Content-Type": "application/json" }
+    //});
+    //.then(res => {
+    //  if (resStatus === 200) {
+    //    Alert.alert("", "회원가입을 축하합니다!", [
+    //      {
+    //        text: "SignUP",
+    //        onPress: () => {
+    //          fetch(LOGIN_API, {
+    //            method: "GET",
+    //            body: JSON.stringify({
+    //              email: this.state.statusEmail,
+    //              password: this.state.statePassword
+    //            }),
+    //            headers: { "Contents-Type": "application/json" }
+    //          }).then(res => {
+    //            //HOME화면으로 이동
+    //          });
+    //        }
+    //      }
+    //    ]);
+    //  }
+    //});
+    // } else {
+    // Alert.alert("", "비밀번호가 일치여부, 중복확인여부 확인필요");
+    // }
   }
   render() {
+    const { navigation } = this.props;
     //TODO: for dynamic age change. if you want change range, you only change for loop range
     const age = [];
     for (let i = 10; i < 50; i += 10) {
@@ -363,8 +377,10 @@ export default class Signup extends Component {
 
     return (
       <Container>
-        <Header />
-
+        <Header style={styles.toplogo}>
+          <Text style={styles.logotext}>owlPost</Text>
+        </Header>
+        <Icon name="backspace" onPress={() => navigation.navigate("SignIn")} />
         <Content>
           {/*e-mail*/}
           <Content>
@@ -418,7 +434,7 @@ export default class Signup extends Component {
               <Input
                 //ref={ref => (this.nickName = ref)}
                 onChange={this.doNotStoreNickName.bind(this)}
-                placeholder="부엉이의 이름을 지어주세요"
+                placeholder="닉네임을 정해주세요"
               />
               {/*TODO: 같은 닉네임이 있거나 값이 null이면 가입되지 않음, 중복확인 버튼 안누르면 가입 안됩*/}
               {this.state.statusNickName ? (
