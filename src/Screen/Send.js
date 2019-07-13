@@ -8,7 +8,12 @@ import {
   Button
 } from "native-base";
 
-import { StyleSheet, TextInput, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  TextInput,
+  ScrollView,
+  KeyboardAvoidingView
+} from "react-native";
 
 const styles = StyleSheet.create({
   toplogo: {
@@ -39,6 +44,19 @@ const styles = StyleSheet.create({
   }
 });
 export default class Send extends Component {
+  // constructor(props) {
+  //   super(props)
+  //   this.state = {
+  //     yPos: 0
+  //   };
+  // }
+
+  handleScroll(event) {
+    this.setState({
+      yPos: event.nativeEvent.contentOffset.y
+    });
+  }
+
   render() {
     const { navigation } = this.props;
     return (
@@ -48,18 +66,25 @@ export default class Send extends Component {
         <Header style={styles.toplogo}>
           <Text style={styles.logotext}>owlPost</Text>
         </Header>
+
         <Text style={styles.toptext}>To. 'NickName'</Text>
-        <ScrollView>
+        <ScrollView
+        // onScroll={this.handleScroll.bind(this)}
+        // scrollEventThrottle={16}
+        >
           <TextInput
             style={styles.lettertext}
             editable={true}
             maxLength={400}
             multiline={true}
+            autoFocus={true}
           />
         </ScrollView>
+
         <Container>
           <Text>----------------------------------</Text>
         </Container>
+
         <Footer>
           <FooterTab>
             <Button
