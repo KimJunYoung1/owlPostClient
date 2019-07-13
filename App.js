@@ -1,8 +1,4 @@
 import React, { Component } from "react";
-import { View, Text } from "native-base";
-import Signup from "./src/Screen/Signup";
-import SignIn from "./src/Screen/SignIn";
-import Home from "./src/Screen/Home";
 import { AppLoading } from "expo";
 import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";

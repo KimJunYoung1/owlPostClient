@@ -75,7 +75,7 @@ export default class Send extends Component {
           <TextInput
             style={styles.lettertext}
             editable={true}
-            maxLength={1000}
+            maxLength={500}
             multiline={true}
             autoFocus={true}
           />
