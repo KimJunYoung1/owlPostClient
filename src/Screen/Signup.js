@@ -23,6 +23,18 @@ import { StyleSheet, Alert } from "react-native";
 const styles = StyleSheet.create({
   text: {
     flex: 1
+  },
+  toplogo: {
+    paddingTop: "1.4%",
+    marginTop: "5.7%",
+    backgroundColor: "black"
+  },
+  logotext: {
+    paddingBottom: "3%",
+    fontSize: 30,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "white"
   }
 });
 
@@ -55,7 +67,8 @@ export default class Signup extends Component {
   //[x]1. email 매칭 확인
   checkSameEmail() {
     //console.log(e.nativeEvent.text);
-    const email = this.email._root._lastNativeText;
+    //const email = this.email._root._lastNativeText;
+    const email = this.state.stateEmail;
     if (email) {
       //TODO: email 형식을 지킬 수 있도록 조건 추가
       if (!email.includes("@") && !email.includes(".")) {
@@ -92,6 +105,14 @@ export default class Signup extends Component {
       Alert.alert("", "email을 입력하세요.");
     }
   }
+  doNotStoreEmail(e) {
+    const email = e.nativeEvent.text;
+    //console.log(email);
+    this.setState({
+      stateEmail: email,
+      statusEmail: false
+    });
+  }
 
   //[x]2. password 매칭확인
   checkPasswordMatch(e) {
@@ -119,8 +140,9 @@ export default class Signup extends Component {
   //[x] 3. 닉네임 중복확인
   checkSameNickName() {
     //console.log(e.nativeEvent.text);
-    const nickname = this.nickName._root._lastNativeText;
-    console.log(nickname);
+    //const nickname = this.nickName._root._lastNativeText;
+    const nickname = this.state.stateNickName;
+    //console.log(nickname);
     if (nickname) {
       Alert.alert("", "사용가능한 닉네임 입니다.");
       this.setState({
@@ -149,8 +171,16 @@ export default class Signup extends Component {
         })*/
     } else {
       //TODO: 빈칸으로 넘기지 않도록 조건 추가
-      Alert.alert("", "부엉이의 이름을 작성해주셔야해요");
+      Alert.alert("", "닉네임을 작성해주셔야해요");
     }
+  }
+  doNotStoreNickName(e) {
+    const NickName = e.nativeEvent.text;
+    //console.log(NickName);
+    this.setState({
+      stateNickName: NickName,
+      statusNickName: false
+    });
   }
 
   //[x] 4. sex 선택 및 중복선택 방지
@@ -196,7 +226,7 @@ export default class Signup extends Component {
   onRadioBtn3Click() {
     if (!this.state.radio4Select) {
       this.setState({
-        radio3elect: !this.radio3Select,
+        radio3Select: !this.radio3Select,
         statusPartner: true,
         statePartner: true
       });
@@ -293,37 +323,39 @@ export default class Signup extends Component {
       }
     ]);
 
-    /*  if (status.every(truthy)) {
-      fetch(SIGIN_UP_API, {
-        method: "POST",
-        body: JSON.stringify(body),
-        headers: { "Contents-Type": "applsication/json" }
-      }).then(res => {
-        if (resStatus === 200) {
-          Alert.alert("", "회원가입을 축하합니다!", [
-            {
-              text: "SignUP",
-              onPress: () => {
-                fetch(LOGIN_API, {
-                  method: "GET",
-                  body: JSON.stringify({
-                    email: this.state.statusEmail,
-                    password: this.state.statePassword
-                  }),
-                  headers: { "Contents-Type": "applsication/json" }
-                }).then(res => {
-                  //HOME화면으로 이동
-                });
-              }
-            }
-          ]);
-        }
-      });
-    } else {
-      Alert.alert("", "비밀번호가 일치여부, 중복확인여부 확인필요");
-    }*/
+    //if (status.every(truthy)) {
+    //fetch(SIGINUP_API + "/user/signup", {
+    //  method: "POST",
+    //  body: JSON.stringify(body),
+    //  headers: { "Content-Type": "application/json" }
+    //});
+    //.then(res => {
+    //  if (resStatus === 200) {
+    //    Alert.alert("", "회원가입을 축하합니다!", [
+    //      {
+    //        text: "SignUP",
+    //        onPress: () => {
+    //          fetch(LOGIN_API, {
+    //            method: "GET",
+    //            body: JSON.stringify({
+    //              email: this.state.statusEmail,
+    //              password: this.state.statePassword
+    //            }),
+    //            headers: { "Contents-Type": "application/json" }
+    //          }).then(res => {
+    //            //HOME화면으로 이동
+    //          });
+    //        }
+    //      }
+    //    ]);
+    //  }
+    //});
+    // } else {
+    // Alert.alert("", "비밀번호가 일치여부, 중복확인여부 확인필요");
+    // }
   }
   render() {
+    const { navigation } = this.props;
     //TODO: for dynamic age change. if you want change range, you only change for loop range
     const age = [];
     for (let i = 10; i < 50; i += 10) {
@@ -345,13 +377,19 @@ export default class Signup extends Component {
 
     return (
       <Container>
-        <Header />
-
+        <Header style={styles.toplogo}>
+          <Text style={styles.logotext}>owlPost</Text>
+        </Header>
+        <Icon name="backspace" onPress={() => navigation.navigate("SignIn")} />
         <Content>
           {/*e-mail*/}
           <Content>
             <ListItem>
-              <Input ref={ref => (this.email = ref)} placeholder="email" />
+              <Input
+                //ref={ref => (this.email = ref)}
+                onChange={this.doNotStoreEmail.bind(this)}
+                placeholder="email"
+              />
               {this.state.statusEmail ? (
                 <Button success>
                   {/*TODO: 같은 아이디가 있으면 가입되지 않음, @ 가 포함되지 않으면 가입되지 않도록 , 중복확인 버튼 안누르면 가입 안되도록*/}
@@ -394,8 +432,9 @@ export default class Signup extends Component {
             <ListItem>
               {/*TODO: 패스워드 일치 여부에 따라 아래의 텍스트 글자(일치,불일치)와 색상(초록,빨강)이 달라지도록, 일치하지 않으면 가입되지 않음*/}
               <Input
-                ref={ref => (this.nickName = ref)}
-                placeholder="부엉이의 이름을 지어주세요"
+                //ref={ref => (this.nickName = ref)}
+                onChange={this.doNotStoreNickName.bind(this)}
+                placeholder="닉네임을 정해주세요"
               />
               {/*TODO: 같은 닉네임이 있거나 값이 null이면 가입되지 않음, 중복확인 버튼 안누르면 가입 안됩*/}
               {this.state.statusNickName ? (
