@@ -55,7 +55,8 @@ export default class Signup extends Component {
   //[x]1. email 매칭 확인
   checkSameEmail() {
     //console.log(e.nativeEvent.text);
-    const email = this.email._root._lastNativeText;
+    //const email = this.email._root._lastNativeText;
+    const email = this.state.stateEmail;
     if (email) {
       //TODO: email 형식을 지킬 수 있도록 조건 추가
       if (!email.includes("@") && !email.includes(".")) {
@@ -92,6 +93,14 @@ export default class Signup extends Component {
       Alert.alert("", "email을 입력하세요.");
     }
   }
+  doNotStoreEmail(e) {
+    const email = e.nativeEvent.text;
+    //console.log(email);
+    this.setState({
+      stateEmail: email,
+      statusEmail: false
+    });
+  }
 
   //[x]2. password 매칭확인
   checkPasswordMatch(e) {
@@ -119,8 +128,9 @@ export default class Signup extends Component {
   //[x] 3. 닉네임 중복확인
   checkSameNickName() {
     //console.log(e.nativeEvent.text);
-    const nickname = this.nickName._root._lastNativeText;
-    console.log(nickname);
+    //const nickname = this.nickName._root._lastNativeText;
+    const nickname = this.state.stateNickName;
+    //console.log(nickname);
     if (nickname) {
       Alert.alert("", "사용가능한 닉네임 입니다.");
       this.setState({
@@ -151,6 +161,14 @@ export default class Signup extends Component {
       //TODO: 빈칸으로 넘기지 않도록 조건 추가
       Alert.alert("", "부엉이의 이름을 작성해주셔야해요");
     }
+  }
+  doNotStoreNickName(e) {
+    const NickName = e.nativeEvent.text;
+    console.log(NickName);
+    this.setState({
+      stateNickName: NickName,
+      statusNickName: false
+    });
   }
 
   //[x] 4. sex 선택 및 중복선택 방지
@@ -351,7 +369,11 @@ export default class Signup extends Component {
           {/*e-mail*/}
           <Content>
             <ListItem>
-              <Input ref={ref => (this.email = ref)} placeholder="email" />
+              <Input
+                //ref={ref => (this.email = ref)}
+                onChange={this.doNotStoreEmail.bind(this)}
+                placeholder="email"
+              />
               {this.state.statusEmail ? (
                 <Button success>
                   {/*TODO: 같은 아이디가 있으면 가입되지 않음, @ 가 포함되지 않으면 가입되지 않도록 , 중복확인 버튼 안누르면 가입 안되도록*/}
@@ -394,7 +416,8 @@ export default class Signup extends Component {
             <ListItem>
               {/*TODO: 패스워드 일치 여부에 따라 아래의 텍스트 글자(일치,불일치)와 색상(초록,빨강)이 달라지도록, 일치하지 않으면 가입되지 않음*/}
               <Input
-                ref={ref => (this.nickName = ref)}
+                //ref={ref => (this.nickName = ref)}
+                onChange={this.doNotStoreNickName.bind(this)}
                 placeholder="부엉이의 이름을 지어주세요"
               />
               {/*TODO: 같은 닉네임이 있거나 값이 null이면 가입되지 않음, 중복확인 버튼 안누르면 가입 안됩*/}
