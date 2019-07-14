@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     color: "white"
   },
   maintext: {
-    top: 10,
+    top: "3%",
     fontSize: 30,
     fontWeight: "bold",
     textAlign: "center"
@@ -38,11 +38,11 @@ const styles = StyleSheet.create({
   },
   owlsInfo: {
     fontSize: 18,
-    top: "14%",
+    top: "23%",
     textAlign: "center"
   },
   btns: {
-    top: "20%"
+    top: "26%"
   },
   btntext: {
     fontSize: 20,
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   },
   btn: {
     flex: 0.3,
-    marginBottom: 15
+    marginBottom: "3.5%"
   }
 });
 
@@ -81,7 +81,7 @@ export default class Mypage extends Component {
               rounded
               dark
               onPress={() => {
-                navigation.goBack();
+                navigation.navigate("SignIn");
               }}
               style={styles.btn}
             >
