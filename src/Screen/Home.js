@@ -61,7 +61,7 @@ export default class Home extends Component {
       // 매칭완료이면 true , 매칭 전, 대기 중에는 false
       postStatus: true,
       // 상대가 편지를 보냈으면 true , default = false -> true 면 또 변경.
-      arriveTime: "15:00",
+      arriveTime: "21:00",
       // get 요청으로 받을 값이 들어갈 예정.
       date: null,
       // 여기에 도착예정 시간과 현재시간을 계산한 카운터 값이 들어가거나 , 편지도착알림 텍스트가 띄워진다.
@@ -76,7 +76,7 @@ export default class Home extends Component {
     });
   };
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.state.matchComplete && this.state.postStatus) {
       let x = setInterval(() => {
         let times = this.state.arriveTime;
@@ -112,9 +112,6 @@ export default class Home extends Component {
         }
       }, 1000);
     }
-  }
-
-  componentDidMount() {
     if (this.state.matchComplete === true) {
       this.setState({
         matchStatus: "편지 쓰기"
