@@ -11,7 +11,8 @@ import {
   Left,
   Body,
   Right,
-  Thumbnail
+  Thumbnail,
+  CheckBox
 } from "native-base";
 
 import { StyleSheet } from "react-native";
@@ -37,6 +38,14 @@ const styles = StyleSheet.create({
   },
   footer: {
     backgroundColor: "black"
+  },
+  deletebtn: {
+    backgroundColor: "black",
+    position: "absolute",
+    right: 0
+  },
+  posttime: {
+    marginRight: "20%"
   }
 });
 export default class Postbox extends Component {
@@ -53,6 +62,7 @@ export default class Postbox extends Component {
         time: "3:43 pm"
       }
     ];
+    this.checkbox = {};
     //
   }
 
@@ -63,6 +73,9 @@ export default class Postbox extends Component {
       <Container>
         <Header style={styles.toplogo}>
           <Text style={styles.logotext}>owlPost</Text>
+          <Button style={styles.deletebtn}>
+            <Text>삭제</Text>
+          </Button>
         </Header>
 
         <List
@@ -77,14 +90,23 @@ export default class Postbox extends Component {
             }}
           >
             <Left>
-              <Thumbnail source={{ uri: "Image URL" }} />
+              <Thumbnail
+                source={{
+                  uri:
+                    "https://pbs.twimg.com/profile_images/2327813980/f0g6arshemdx1xxarjx5_400x400.jpeg"
+                }}
+              />
             </Left>
             <Body>
               <Text>{from}</Text>
               <Text note>{letter}</Text>
             </Body>
             <Right>
-              <Text note>{time}</Text>
+              <Text note style={styles.posttime}>
+                {time}
+              </Text>
+
+              <CheckBox />
             </Right>
           </ListItem>
         </List>

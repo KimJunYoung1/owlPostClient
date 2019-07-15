@@ -31,6 +31,25 @@ const styles = StyleSheet.create({
   },
   footer: {
     backgroundColor: "black"
+  },
+  to: {
+    textAlign: "left",
+    fontSize: 20,
+    marginTop: "5%"
+  },
+  letter: {
+    textAlign: "center"
+  },
+  from: {
+    textAlign: "right",
+    fontSize: 20,
+    marginBottom: "5%",
+    marginRight: "3%"
+  },
+  time: {
+    textAlign: "left",
+    marginLeft: "5%",
+    marginBottom: "0%"
   }
 });
 
@@ -50,10 +69,12 @@ export default class Letter extends Component {
         <Header style={styles.toplogo}>
           <Text style={styles.logotext}>owlPost</Text>
         </Header>
-
-        <Text> {letters[0].from} </Text>
-
-        <Container />
+        <Text style={styles.to}> To. {letters[0].to} </Text>
+        <Body>
+          <Text>{letters[0].letter}</Text>
+        </Body>
+        <Text style={styles.time}>{letters[0].time}</Text>
+        <Text style={styles.from}>From. {letters[0].from} </Text>
         <Footer>
           <FooterTab>
             <Button
