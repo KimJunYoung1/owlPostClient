@@ -5,6 +5,8 @@ import SignIn from "./SignIn";
 import Postbox from "./Postbox";
 import Send from "./Send";
 import Mypage from "./Mypage";
+import AddBlackList from "./AddBlackList";
+import DeleteId from "./DeleteId";
 
 const SignNavigation = createStackNavigator(
   {
@@ -13,9 +15,11 @@ const SignNavigation = createStackNavigator(
     SignIn: { screen: SignIn },
     Mypage: { screen: Mypage },
     Postbox: { screen: Postbox },
-    Send: { screen: Send }
+    Send: { screen: Send },
+    AddBlackList: { screen: AddBlackList },
+    DeleteId: { screen: DeleteId }
   },
-  { initialRouteName: "SignIn", headerMode: "none" }
+  { initialRouteName: "Mypage", headerMode: "none" }
 );
 
 const SignNavi = createAppContainer(SignNavigation);

@@ -351,7 +351,8 @@ export default class Signup extends Component {
     //            }),
     //            headers: { "Contents-Type": "application/json" }
     //          }).then(res => {
-    //            //HOME화면으로 이동
+    //            //HOME화면으로 이동 , 토큰 저장
+    //              this.props.navigation.navigate("Home")
     //          });
     //        }
     //      }

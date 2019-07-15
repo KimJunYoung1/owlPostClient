@@ -10,7 +10,7 @@ import {
   FooterTab,
   Icon
 } from "native-base";
-import { StyleSheet, KeyboardAvoidingView } from "react-native";
+import { StyleSheet, Alert } from "react-native";
 
 export default class SignIn extends Component {
   logInGetRequest() {
@@ -28,13 +28,17 @@ export default class SignIn extends Component {
       this.props.navigation.navigate("Home");
       //TODO : 서버에 회원인지 아닌지 확인 요청(GET)을 하기
 
-      /*fetch(LOGINAPI, {
+      /*
+      fetch(LOGINAPI, {
         method: "GET",
         body: JSON.stringify(logInData),
         headers: { "Contents-Type": "application/json" }
       }).then(res => {
-        if (statuscode === 200) {   // ==> 홈 화면 으로
-           } else if (statuscode === 201) { // ==> alert("등록되지 않은 정보 입니다.")창 띄우기
+        if (statuscode === 200) { 
+          //이때 토큰을 받아서 저장한다.
+          this.props.navigation.navigate("Home")  // ==> 홈 화면 으로
+           } else if (statuscode === 201) { 
+             Alert.alert("등록되지 않은 정보입니다.")
       }
     }); */
     } else {
