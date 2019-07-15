@@ -6,6 +6,7 @@ import Mypage from "./Mypage";
 import SignIn from "./SignIn";
 import AddBlackList from "./AddBlackList";
 import DeleteId from "./DeleteId";
+import Letter from "./Letter";
 
 const HomeNavigation = createStackNavigator(
   {
@@ -15,7 +16,8 @@ const HomeNavigation = createStackNavigator(
     Send: { screen: Send },
     SignIn: { screen: SignIn },
     AddBlackList: { screen: AddBlackList },
-    DeleteId: { screen: DeleteId }
+    DeleteId: { screen: DeleteId },
+    Letter: { screen: Letter }
   },
   { initialRouteName: "Home", headerMode: "none" }
 );

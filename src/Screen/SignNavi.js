@@ -7,6 +7,7 @@ import Send from "./Send";
 import Mypage from "./Mypage";
 import AddBlackList from "./AddBlackList";
 import DeleteId from "./DeleteId";
+import Letter from "./Letter";
 
 const SignNavigation = createStackNavigator(
   {
@@ -17,7 +18,8 @@ const SignNavigation = createStackNavigator(
     Postbox: { screen: Postbox },
     Send: { screen: Send },
     AddBlackList: { screen: AddBlackList },
-    DeleteId: { screen: DeleteId }
+    DeleteId: { screen: DeleteId },
+    Letter: { screen: Letter }
   },
   { initialRouteName: "Mypage", headerMode: "none" }
 );
