@@ -21,7 +21,7 @@ const SignNavigation = createStackNavigator(
     DeleteId: { screen: DeleteId },
     Letter: { screen: Letter }
   },
-  { initialRouteName: "Mypage", headerMode: "none" }
+  { initialRouteName: "SignIn", headerMode: "none" }
 );
 
 const SignNavi = createAppContainer(SignNavigation);
