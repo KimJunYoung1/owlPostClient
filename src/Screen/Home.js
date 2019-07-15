@@ -65,7 +65,7 @@ export default class Home extends Component {
       postStatus: true,
       // fetch res.date ? null ? true : false
       // 상대가 편지를 보냈으면 true , default = false -> true 면 또 변경.
-      arriveTime: "07/15/19   21:00", //  현재 fake값 , null에서 요청으로 받는 값으로 쓸 예정
+      arriveTime: "07/15/19   22:00", //  현재 fake값 , null에서 요청으로 받는 값으로 쓸 예정
       // get 요청으로 받을 값이 들어갈 예정.
       date: null,
       // 여기에 도착예정 시간과 현재시간을 계산한 카운터 값이 들어가거나 , 편지도착알림 텍스트가 띄워진다.
