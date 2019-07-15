@@ -60,7 +60,7 @@ export default class Mypage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      partnerNickName: "nick furi",
+      partnerNickName: null,
       sendLetters: 0,
       receiveLetters: 0
     };
