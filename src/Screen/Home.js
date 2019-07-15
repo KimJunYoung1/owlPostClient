@@ -58,10 +58,13 @@ export default class Home extends Component {
       // 포스트 요청에 따라 푸시요청??
       partner: "Ironman",
       matchComplete: true,
+      // fetch res.partnerNickName 이 null ? true : false
       // 매칭완료이면 true , 매칭 전, 대기 중에는 false
+      // 매칭버튼 변경 . 기본 텍스트에서 상대방 닉네임으로 변경
       postStatus: true,
+      // fetch res.date ? null ? true : false
       // 상대가 편지를 보냈으면 true , default = false -> true 면 또 변경.
-      arriveTime: "21:00",
+      arriveTime: "07/15/19   21:00",
       // get 요청으로 받을 값이 들어갈 예정.
       date: null,
       // 여기에 도착예정 시간과 현재시간을 계산한 카운터 값이 들어가거나 , 편지도착알림 텍스트가 띄워진다.
@@ -77,19 +80,54 @@ export default class Home extends Component {
   };
 
   componentDidMount() {
+    // fetch(LOGIN_API)
+    //     .then(res => res.json())
+    //     .then(res => {
+    //       if(res.partnerNickname === null){
+    //         this.setState({
+    //           matchComplete : false
+    //         });
+    //       }
+    //       this.setState({
+    //         matchComplete : true
+    //       });
+    //     });
+
+    // if (this.state.matchComplete === true) {
+    //   // 상대방과 매칭 성공한다면
+    //   fetch(LOGIN_API)
+    //     .then(res => res.json())
+    //     .then(res => {
+    //       this.setState({
+    //         partner: res.partnerNickname,
+    //         matchStatus: "편지 쓰기"
+    //       });
+    //     });
+    // }
+    // else if (this.state.matchComplete === false) {
+    //  // 상대방과 매칭 이전이라면 /매칭시작을 누른 적이 있는 지 , 없는 지
+    //   if (this.state.matchStatus === "매칭 중") {
+    //     this.setState({
+    //       matchStatus: "매칭 중"
+    //     });
+    //   }
+    //   this.setState({
+    //     matchStatus: "매칭시작"
+    //   });
+    // }
+
+    // 상대방이 있고 상대방 편지가 출발했을 때
     if (this.state.matchComplete && this.state.postStatus) {
       let x = setInterval(() => {
-        let times = this.state.arriveTime;
-        let today = new Date().toLocaleDateString();
-        let arrive = today + " " + times;
+        // 여기도 fench 써서 아예 받아올 예정.
+        let arrive = this.state.arriveTime;
+        //console.log(times, "---", today, "---", arrive);
         var deadline = new Date(arrive).getTime();
         var now = new Date().getTime();
-
         let t = deadline - now;
         let days = Math.floor(t / (1000 * 60 * 60 * 24));
         let hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         let minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
-
         if (t <= 0) {
           clearInterval(x);
           this.setState({
@@ -110,12 +148,8 @@ export default class Home extends Component {
               "분"
           });
         }
-      }, 1000);
-    }
-    if (this.state.matchComplete === true) {
-      this.setState({
-        matchStatus: "편지 쓰기"
-      });
+      }, 2000);
+      // 처음에 한 번 띄워주고 하는 법을 생각해보자 ㅠ_ㅠ
     }
   }
 
