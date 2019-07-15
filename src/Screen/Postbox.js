@@ -58,7 +58,7 @@ export default class Postbox extends Component {
 
   render() {
     const { navigation } = this.props;
-    const { nickname, letter, time } = this.letters;
+    const { from, letter, time } = this.letters[0];
     return (
       <Container>
         <Header style={styles.toplogo}>
@@ -80,7 +80,7 @@ export default class Postbox extends Component {
               <Thumbnail source={{ uri: "Image URL" }} />
             </Left>
             <Body>
-              <Text>{nickname}</Text>
+              <Text>{from}</Text>
               <Text note>{letter}</Text>
             </Body>
             <Right>

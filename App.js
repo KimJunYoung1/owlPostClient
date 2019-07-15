@@ -23,6 +23,7 @@ export default class App extends Component {
     this.setState({
       loading: false
     });
+    // 토큰 (로그아웃 or 회원탈퇴) 이 없어지면 loginStatus false 로 변경
   }
 
   render() {

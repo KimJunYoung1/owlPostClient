@@ -51,7 +51,7 @@ export default class Letter extends Component {
           <Text style={styles.logotext}>owlPost</Text>
         </Header>
 
-        <Text> {letters.nickname} </Text>
+        <Text> {letters[0].from} </Text>
 
         <Container />
         <Footer>
