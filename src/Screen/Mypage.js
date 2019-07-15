@@ -120,8 +120,14 @@ export default class Mypage extends Component {
   };
 
   deleteInfoInService = () => {
+    const { navigation } = this.props;
     Alert.alert("", "회원탈퇴를 원하시나요?", [
-      { text: "네" },
+      {
+        text: "네",
+        onPress: () => {
+          navigation.navigate("DeleteId");
+        }
+      },
       { text: "아니오" }
     ]);
   };

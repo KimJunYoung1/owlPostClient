@@ -19,7 +19,7 @@ const SignNavigation = createStackNavigator(
     AddBlackList: { screen: AddBlackList },
     DeleteId: { screen: DeleteId }
   },
-  { initialRouteName: "AddBlackList", headerMode: "none" }
+  { initialRouteName: "Mypage", headerMode: "none" }
 );
 
 const SignNavi = createAppContainer(SignNavigation);

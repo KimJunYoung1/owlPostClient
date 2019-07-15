@@ -1,6 +1,4 @@
 import {
-  Picker,
-  Body,
   Container,
   Button,
   Text,
@@ -10,7 +8,6 @@ import {
   Header,
   Content,
   Right,
-  CheckBox,
   Footer,
   FooterTab,
   Icon
