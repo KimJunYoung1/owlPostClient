@@ -80,40 +80,42 @@ export default class Home extends Component {
   };
 
   componentDidMount() {
+    // let AllUserInfo = "3.15.161.138:5000/user/signin";
     // fetch(AllUserInfo)
     //   .then(res => res.json())
     //   .then(res => {
-    //     if (res.partnerNickname === null) {
+    //     if (res.result.partner_nickname === null) {
     //       this.setState({
     //         matchComplete: false
     //       });
-    //     }
-    //     this.setState({
-    //       matchComplete: true
-    //     });
-    //   });
-
-    // if (this.state.matchComplete === true) {
-    //   // 상대방과 매칭 성공한다면
-    //   fetch(LOGIN_API)
-    //     .then(res => res.json())
-    //     .then(res => {
+    //     } else {
     //       this.setState({
-    //         partner: res.partnerNickname,
+    //         matchComplete: true
+    //       });
+    //     }
+    //     // 또 then? 비동기 ??
+    //     if (this.state.matchComplete === true) {
+    //       // 상대방과 매칭 성공한다면
+    //       // fetch(LOGIN_API)
+    //       //   .then(res => res.json())
+    //       //   .then(res => {
+    //       this.setState({
+    //         partner: res.result.partner_nickname,
     //         matchStatus: "편지 쓰기"
     //       });
-    //     });
-    // } else if (this.state.matchComplete === false) {
-    //   // 상대방과 매칭 이전이라면 /매칭시작을 누른 적이 있는 지 , 없는 지
-    //   if (this.state.matchStatus === "매칭 중") {
-    //     this.setState({
-    //       matchStatus: "매칭 중"
-    //     });
-    //   }
-    //   this.setState({
-    //     matchStatus: "매칭시작"
+    //     } else {
+    //       // 상대방과 매칭 이전이라면 /매칭시작을 누른 적이 있는 지 , 없는 지
+    //       if (this.state.matchStatus === "매칭 중") {
+    //         this.setState({
+    //           matchStatus: "매칭 중"
+    //         });
+    //       } else {
+    //         this.setState({
+    //           matchStatus: "매칭시작"
+    //         });
+    //       }
+    //     }
     //   });
-    // }
 
     // fetch(Letter)
     //     .then(res => res.json())
@@ -130,6 +132,7 @@ export default class Home extends Component {
     // 알럿트를 보고 편지함을 들어가면! if (t <= 0)
 
     // 상대방이 있고 상대방 편지가 출발했을 때
+
     if (this.state.matchComplete && this.state.postStatus) {
       // 여기도 fench 써서 아예 받아올 예정.
       let arrive = this.state.arriveTime;
