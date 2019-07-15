@@ -10,6 +10,7 @@ import {
 } from "native-base";
 import { StyleSheet } from "react-native";
 import AwesomeAlert from "react-native-awesome-alerts";
+const ServerURL = "http://3.15.161.138:5000";
 
 const styles = StyleSheet.create({
   toplogo: {
@@ -80,13 +81,11 @@ export default class Home extends Component {
   };
 
   componentDidMount() {
-    let AllUserInfo = "http://3.15.161.138:5000/user/signin";
+    let AllUserInfo = `${ServerURL}/user/signin/?email=jun@naver.com&password=123`;
     fetch(AllUserInfo)
       .then(res => res.json())
       .then(res => {
-        console.log(res);
-
-        if (res.partner_nickname === null) {
+        if (res.result.partner_nickname === null) {
           this.setState({
             matchComplete: false
           });
@@ -102,7 +101,7 @@ export default class Home extends Component {
         } else {
           this.setState({
             matchComplete: true,
-            partner: res.partner_nickname,
+            partner: res.result.partner_nickname,
             matchStatus: "편지 쓰기"
           });
         }

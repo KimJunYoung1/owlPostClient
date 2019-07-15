@@ -5,6 +5,7 @@ import SignIn from "./SignIn";
 import Postbox from "./Postbox";
 import Send from "./Send";
 import Mypage from "./Mypage";
+import Letter from "./Letter";
 
 const SignNavigation = createStackNavigator(
   {
@@ -13,7 +14,8 @@ const SignNavigation = createStackNavigator(
     SignIn: { screen: SignIn },
     Mypage: { screen: Mypage },
     Postbox: { screen: Postbox },
-    Send: { screen: Send }
+    Send: { screen: Send },
+    Letter: { screen: Letter }
   },
   { initialRouteName: "SignIn", headerMode: "none" }
 );

@@ -4,6 +4,7 @@ import Postbox from "./Postbox";
 import Send from "./Send";
 import Mypage from "./Mypage";
 import SignIn from "./SignIn";
+import Letter from "./Letter";
 
 const HomeNavigation = createStackNavigator(
   {
@@ -11,7 +12,8 @@ const HomeNavigation = createStackNavigator(
     Mypage: { screen: Mypage },
     Postbox: { screen: Postbox },
     Send: { screen: Send },
-    SignIn: { screen: SignIn }
+    SignIn: { screen: SignIn },
+    Letter: { screen: Letter }
   },
   { initialRouteName: "Home", headerMode: "none" }
 );
