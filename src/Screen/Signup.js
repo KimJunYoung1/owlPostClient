@@ -19,6 +19,7 @@ import {
   Radio
 } from "native-base";
 import { StyleSheet, Alert, AsyncStorage } from "react-native";
+import { SERVER_API } from "../Component/API";
 
 const styles = StyleSheet.create({
   text: {
@@ -76,8 +77,7 @@ export default class Signup extends Component {
         Alert.alert("", "email의 형식이 아닙니다.");
       } else {
         //TODO: email형식을 지켰으면, DB안에 같은 데이터가 있는지 확인하고, 같은 데이터가 있으면 StausEmail 을 true로 바꾼다.
-        const EMAIL_API = `http://3.15.161.138:5000/user/signup/overlapcheck?email=${email}`;
-        fetch(EMAIL_API)
+        fetch(SERVER_API + `/user/signup/overlapcheck?email=${email}`)
           .then(res => {
             if (res.status === 200) {
               this.setState({
@@ -297,9 +297,8 @@ export default class Signup extends Component {
     }
     console.log(statusPasswordMatch);
     //console.log(status.every(truthy));
-    const SIGNUP_API = `http://3.15.161.138:5000/user/signup`;
     if (status.every(truthy)) {
-      fetch(SIGNUP_API, {
+      fetch(SERVER_API + `/user/signup`, {
         method: "POST",
         body: JSON.stringify(body),
         headers: { "Content-Type": "application/json" }
@@ -309,10 +308,12 @@ export default class Signup extends Component {
             {
               text: "SignUP",
               onPress: () => {
-                const LOGIN_API = `http://3.15.161.138:5000/user/signin?email=${
-                  this.state.stateEmailemail
-                }&password=${this.state.statePassword}`;
-                fetch(LOGIN_API)
+                fetch(
+                  SERVER_API +
+                    `/user/signin?email=${
+                      this.state.stateEmailemail
+                    }&password=${this.state.statePassword}`
+                )
                   .then(res => {
                     //HOME화면으로 이동 , 토큰 저장
                     return res.json();
@@ -344,7 +345,7 @@ export default class Signup extends Component {
     //패스워드가 매칭여부에 따라 메시지 변화
     let matchMsg;
     let passwordMatch;
-    //console.log(this.state.statePassword, this.state.stateComparePassword);
+    console.log(this.state.statePassword, this.state.stateComparePassword);
     if (!this.state.statePassword || !this.state.stateComparePassword) {
       matchMsg = "";
     } else if (this.state.statePassword === this.state.stateComparePassword) {
@@ -390,7 +391,7 @@ export default class Signup extends Component {
                 onChange={e => {
                   const password = e.nativeEvent.text;
                   const ComparePassword = this.state.stateComparePassword;
-                  //console.log(password);
+                  console.log(password);
                   if (password === ComparePassword) {
                     this.setState({
                       statusPasswordMatch: true,
@@ -412,7 +413,7 @@ export default class Signup extends Component {
                 onChange={e => {
                   const ComparePassword = e.nativeEvent.text;
                   const password = this.state.statePassword;
-                  //console.log(password, ComparePassword);
+                  console.log(password, ComparePassword);
                   if (password === ComparePassword) {
                     this.setState({
                       statusPasswordMatch: true,

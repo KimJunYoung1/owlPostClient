@@ -11,6 +11,7 @@ import {
   Icon
 } from "native-base";
 import { StyleSheet, Alert, AsyncStorage } from "react-native";
+import { SERVER_API } from "../Component/API";
 
 // if (statuscode === 200) {
 //   //이때 토큰을 받아서 저장한다.
@@ -27,13 +28,10 @@ export default class SignIn extends Component {
     if (email && password) {
       //console.log(process.env.SERVER_URL);
       //TODO : 서버에 회원인지 아닌지 확인 요청(GET)을 하기
-      const LOGIN_API = `http://3.15.161.138:5000/user/signin?email=${email}&password=${password}`;
       //console.log(LOGIN_API);
-      fetch(LOGIN_API)
-        .then(async res => {
+      fetch(SERVER_API + `/user/signin?email=${email}&password=${password}`)
+        .then(res => {
           if (res.status === 200) {
-            const token = await AsyncStorage.getItem("token");
-
             return res.json();
           } else if (res.status === 400) {
             Alert.alert("", "등록되지 않은 정보 입니다.");

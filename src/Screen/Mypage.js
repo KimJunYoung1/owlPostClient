@@ -13,6 +13,7 @@ import {
 } from "native-base";
 
 import { StyleSheet, Alert, AsyncStorage } from "react-native";
+import { SERVER_API } from "../Component/API";
 
 import AwesomeAlert from "react-native-awesome-alerts";
 
@@ -81,8 +82,7 @@ export default class Mypage extends Component {
         {
           text: "네",
           onPress: () => {
-            const CUTMATCH_API = "http://3.15.161.138:5000/check/cutmatch";
-            fetch(CUTMATCH_API, {
+            fetch(SERVER_API + `/check/cutmatch`, {
               method: "PUT",
               //토큰을 보낸다. 토큰은 MyPage에서 props로 가져온다.
               headers: { "x-access-token": token }
