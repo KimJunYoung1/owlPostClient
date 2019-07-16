@@ -61,16 +61,32 @@ export default class Mypage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      partner_nickname: "ironman",
+      partner_nickname: null,
       sendLetters: 0,
       receiveLetters: 0
     };
   }
-  // componentDidMount() {
-  //   //토큰 제출
-  //   //fetch(TOKEN_API)
-  //   //토큰인증을 통해 userinfo를 받아온뒤, 파트너 아이디의 여부에 따라 partnerNickName과 주고받은 편지의 수를 환산해서, setState를 해준다.
-  // }
+  async componentDidMount() {
+    //토큰 제출
+    const token = await AsyncStorage.getItem("token");
+    fetch(SERVER_API + "/check/mypage", {
+      headers: { "x-access-token": token }
+    })
+      .then(res => res.json())
+      .then(json => {
+        console.log(json);
+        this.setState({
+          partner_nickname: json.partner_nickname,
+          sendLetters: json.fromData.length,
+          receiveLetters: json.toData.length
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+    //토큰인증을 통해 userinfo를 받아온뒤, 파트너 아이디의 여부에 따라 partnerNickName과 주고받은 편지의 수를 환산해서, setState를 해준다.
+  }
   disConnect = async () => {
     const { partner_nickname } = this.state;
     const token = await AsyncStorage.getItem("token");
