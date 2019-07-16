@@ -75,31 +75,21 @@ export default class Signup extends Component {
       if (!email.includes("@") && !email.includes(".")) {
         Alert.alert("", "email의 형식이 아닙니다.");
       } else {
-        Alert.alert("", "사용가능한 이메일 입니다.");
-        this.setState({
-          stateEmail: email,
-          statusEmail: true
-        });
-        // Alert.alert("","이미 같은 email이 존재 합니다.")
-
         //TODO: email형식을 지켰으면, DB안에 같은 데이터가 있는지 확인하고, 같은 데이터가 있으면 StausEmail 을 true로 바꾼다.
-        /*fetch(SAME_ID_API,{
-          method : "GET",
-          body : JSON.stringify({ email : email }),
-          headers: { "Contents-Type": "applsication/json" } 
-        }).then((res)=>{
-          if(rescode===202){
-            Alert.alert("","이미 같은 email이 존재 합니다.")
-            //빈칸으로 만들어주기
-          }
-          else if(rescode === 200){
-            Alert.alert("","사용가능한 이메일 입니다.")
-            this.setState({
-              stateEmail : email,
-              statusEmail : true  
-            })
-          }
-        })*/
+        const EMAIL_API = `http://3.15.161.138:5000/user/signup/overlapcheck?email=${email}`;
+        fetch(EMAIL_API)
+          .then(res => {
+            if (res.status === 200) {
+              this.setState({
+                stateEmail: email,
+                statusEmail: true
+              });
+              return res.json();
+            } else if (res.status) {
+              return res.json();
+            }
+          })
+          .then(json => Alert.alert("", json));
       }
     } else {
       //TODO: 빈칸으로 넘기지 않도록 조건 추가
