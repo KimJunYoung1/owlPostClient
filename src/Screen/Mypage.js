@@ -86,23 +86,28 @@ export default class Mypage extends Component {
               method: "PUT",
               //토큰을 보낸다. 토큰은 MyPage에서 props로 가져온다.
               headers: { "x-access-token": token }
-            }).then(res => {
-              if (res.status === 200) {
-                Alert.alert(
-                  "",
-                  partner_nickname + " 님 과의 인연이 성공적으로 끊어졌습니다.",
-                  {
-                    text: "ok",
-                    onPress: () =>
-                      this.setState({
-                        partner_nickname: null,
-                        sendLetters: 0,
-                        receiveLetters: 0
-                      })
-                  }
-                );
-              }
-            });
+            })
+              .then(res => {
+                if (res.status === 200) {
+                  Alert.alert(
+                    "",
+                    partner_nickname +
+                      " 님 과의 인연이 성공적으로 끊어졌습니다.",
+                    {
+                      text: "ok",
+                      onPress: () =>
+                        this.setState({
+                          partner_nickname: null,
+                          sendLetters: 0,
+                          receiveLetters: 0
+                        })
+                    }
+                  );
+                }
+              })
+              .catch(err => {
+                Alert.alert("", "현재 파트너가 없는 상태 입니다.");
+              });
           }
         },
         { text: "아니오" }
