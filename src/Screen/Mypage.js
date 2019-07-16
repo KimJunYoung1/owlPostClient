@@ -175,6 +175,7 @@ export default class Mypage extends Component {
               rounded
               dark
               onPress={() => {
+                AsyncStorage.clear();
                 navigation.navigate("SignIn");
               }}
               style={styles.btn}

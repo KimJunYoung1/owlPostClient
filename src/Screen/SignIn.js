@@ -25,13 +25,15 @@ export default class SignIn extends Component {
     const { navigation } = this.props;
     //TODO : 인풋창의 값을 받아와서 객체 형태로 만들어주기
     if (email && password) {
-      console.log(process.env.SERVER_URL);
+      //console.log(process.env.SERVER_URL);
       //TODO : 서버에 회원인지 아닌지 확인 요청(GET)을 하기
       const LOGIN_API = `http://3.15.161.138:5000/user/signin?email=${email}&password=${password}`;
       //console.log(LOGIN_API);
       fetch(LOGIN_API)
-        .then(res => {
+        .then(async res => {
           if (res.status === 200) {
+            const token = await AsyncStorage.getItem("token");
+
             return res.json();
           } else if (res.status === 400) {
             Alert.alert("", "등록되지 않은 정보 입니다.");
