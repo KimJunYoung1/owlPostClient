@@ -83,7 +83,7 @@ export default class Postbox extends Component {
           letters: res
         });
         console.log(res);
-        console.log("state ====>", this.state.letters);
+        console.log("여기 맞지???state ====>", this.state.letters);
       });
   }
 
@@ -99,41 +99,49 @@ export default class Postbox extends Component {
           </Button>
         </Header>
 
-        {this.state.letters === null ? (
+        {letters === null ? (
           <Text>로드안댐?</Text>
         ) : (
-          <List
-          // length 만큼 예를 뿌린다 스크롤 화면으로!
-          >
-            <ListItem
-              avatar
-              onPress={() => {
-                navigation.navigate("Letter", {
-                  letters: this.state.letters // props 내려주는 것도 다시 생각..
-                });
-              }}
+          letters.toData.map((ele, idx) => (
+            <List
+              key={idx.toString()}
+              // length 만큼 예를 뿌린다 스크롤 화면으로!
             >
-              <Left>
-                <Thumbnail
-                  source={{
-                    uri:
-                      "https://pbs.twimg.com/profile_images/2327813980/f0g6arshemdx1xxarjx5_400x400.jpeg"
-                  }}
-                />
-              </Left>
-              <Body>
-                <Text>{letters.toData[0].from}</Text>
-                <Text note>{letters.toData[0].messages}</Text>
-              </Body>
-              <Right>
-                <Text note style={styles.posttime}>
-                  {letters.toData[0].time}
-                </Text>
+              <ListItem
+                avatar
+                onPress={() => {
+                  navigation.navigate(
+                    "Letter",
+                    {
+                      letters: this.state.letters
+                      // props 내려주는 것도 다시 생각..
+                    },
+                    idx
+                  );
+                }}
+              >
+                <Left>
+                  <Thumbnail
+                    source={{
+                      uri:
+                        "https://pbs.twimg.com/profile_images/2327813980/f0g6arshemdx1xxarjx5_400x400.jpeg"
+                    }}
+                  />
+                </Left>
+                <Body>
+                  <Text>{ele.from}</Text>
+                  <Text note>{ele.messages}</Text>
+                </Body>
+                <Right>
+                  <Text note style={styles.posttime}>
+                    {ele.time}
+                  </Text>
 
-                <CheckBox />
-              </Right>
-            </ListItem>
-          </List>
+                  <CheckBox />
+                </Right>
+              </ListItem>
+            </List>
+          ))
         )}
 
         <Container />
