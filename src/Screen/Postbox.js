@@ -73,13 +73,11 @@ export default class Postbox extends Component {
   }
 
   componentDidMount() {
-    let PostURL =
-      "http://3.15.161.138:5000/check/postbox?email=junYoung@naver.com&nickname=hello";
+    let PostURL = "";
 
     fetch(PostURL, {
       headers: {
-        "x-access-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imp1bllvdW5nQG5hdmVyLmNvbSIsImlhdCI6MTU2MzI0NjcyOSwiZXhwIjoxNTYzMjY0NzI5fQ.osuHrHMrx7FUohnQGLZGrtr8Qp8hzmG5w0LZnrkFrMI"
+        "x-access-token": ""
       }
     })
       .then(res => res.json())

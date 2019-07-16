@@ -81,8 +81,7 @@ export default class Home extends Component {
   };
 
   componentDidMount() {
-    let AllUserInfo =
-      "http://3.15.161.138:5000/user/signin?email=junYoung@naver.com&password=123";
+    let AllUserInfo = "";
     setInterval(() => {
       fetch(AllUserInfo)
         .then(res => res.json())
@@ -257,18 +256,12 @@ export default class Home extends Component {
                     matchStatus: "매칭 중"
                   });
 
-                  fetch(
-                    `http://3.15.161.138:5000/check/match?nickname=${
-                      this.state.myname
-                    }`,
-                    {
-                      method: "POST",
-                      headers: {
-                        "x-access-token":
-                          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imp1bllvdW5nQG5hdmVyLmNvbSIsImlhdCI6MTU2MzI0NjcyOSwiZXhwIjoxNTYzMjY0NzI5fQ.osuHrHMrx7FUohnQGLZGrtr8Qp8hzmG5w0LZnrkFrMI"
-                      }
+                  fetch(`=${this.state.myname}`, {
+                    method: "POST",
+                    headers: {
+                      "x-access-token": ""
                     }
-                  );
+                  });
                 } else {
                   navigation.navigate("Send");
                 }
