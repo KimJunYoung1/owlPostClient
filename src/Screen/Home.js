@@ -58,14 +58,14 @@ export default class Home extends Component {
       // 상대와 서로를 추가한다.
       // 포스트 요청에 따라 푸시요청??
       partner: " ", //  현재 fake값 , null에서 요청으로 받는 값으로 쓸 예정
-      matchComplete: true,
+      matchComplete: false,
       // fetch res.partnerNickName 이 null ? true : false
       // 매칭완료이면 true , 매칭 전, 대기 중에는 false
       // 매칭버튼 변경 . 기본 텍스트에서 상대방 닉네임으로 변경
-      postStatus: true,
+      postStatus: false,
       // fetch res.date ? null ? true : false
       // 상대가 편지를 보냈으면 true , default = false -> true 면 또 변경.
-      arriveTime: "07/15/19   21:00", //  현재 fake값 , null에서 요청으로 받는 값으로 쓸 예정
+      arriveTime: "07/17/19   22:00", //  현재 fake값 , null에서 요청으로 받는 값으로 쓸 예정
       // get 요청으로 받을 값이 들어갈 예정.
       date: null,
       // 여기에 도착예정 시간과 현재시간을 계산한 카운터 값이 들어가거나 , 편지도착알림 텍스트가 띄워진다.
@@ -81,49 +81,39 @@ export default class Home extends Component {
   };
 
   componentDidMount() {
-    // let AllUserInfo = `${ServerURL}/user/signin/?email=junYoung@naver.com&password=123`;
-    // fetch(AllUserInfo)
-    //   .then(res => res.json())
-    //   .then(res => {
-    //     console.log("!!!!!!!!!", res);
+    let AllUserInfo = "";
+    setInterval(() => {
+      fetch(AllUserInfo)
+        .then(res => res.json())
+        .then(res => {
+          console.log("!!!!!!!!!", res);
 
-    //     if (res.result.partner_nickname === null) {
-    //       this.setState({
-    //         matchComplete: false
-    //       });
-    //       if (this.state.matchStatus === "매칭 중") {
-    //         this.setState({
-    //           matchStatus: "매칭 중"
-    //         });
-    //       } else {
-    //         this.setState({
-    //           matchStatus: "매칭시작"
-    //         });
-    //       }
-    //     } else {
-    //       this.setState({
-    //         matchComplete: true,
-    //         partner: res.result.partner_nickname,
-    //         matchStatus: "편지 쓰기"
-    //       });
-    //     }
-    //   });
-
-    // fetch(Letter)
-    //     .then(res => res.json())
-    //     .then(res => {
-    //       if(편지창에 변화가 있다면?---> 이 조건을 어케하지??){
-    //         this.setState({
-    //           postStatus : true
-    //         });
-    //       }
-    //       this.setState({
-    //         postStatus : false
-    //       });
-    //     });
-    // 알럿트를 보고 편지함을 들어가면! if (t <= 0)
-
-    // 상대방이 있고 상대방 편지가 출발했을 때
+          if (res.result.partner_nickname === null) {
+            this.setState({
+              matchComplete: false,
+              myname: res.result.nickname
+            });
+            if (this.state.matchStatus === "매칭 중") {
+              this.setState({
+                matchStatus: "매칭 중",
+                myname: res.result.nickname
+              });
+            } else {
+              this.setState({
+                matchStatus: "매칭시작",
+                myname: res.result.nickname
+              });
+            }
+          } else {
+            this.setState({
+              matchComplete: true,
+              partner: res.result.partner_nickname,
+              matchStatus: "편지 쓰기",
+              myname: res.result.nickname
+            });
+          }
+        });
+    }, 60000);
 
     if (this.state.matchComplete && this.state.postStatus) {
       // 여기도 fench 써서 아예 받아올 예정.
@@ -173,6 +163,22 @@ export default class Home extends Component {
       }, 60000);
       // 처음에 한 번 띄워주고 하는 법을 생각해보자 ㅠ_ㅠ
     }
+
+    // fetch(Letter)
+    //     .then(res => res.json())
+    //     .then(res => {
+    //       if(편지창에 변화가 있다면?---> 이 조건을 어케하지??){
+    //         this.setState({
+    //           postStatus : true
+    //         });
+    //       }
+    //       this.setState({
+    //         postStatus : false
+    //       });
+    //     });
+    // 알럿트를 보고 편지함을 들어가면! if (t <= 0)
+
+    // 상대방이 있고 상대방 편지가 출발했을 때
   }
 
   render() {
@@ -248,6 +254,13 @@ export default class Home extends Component {
                     centerText: "FIND FRIEND!",
                     subText: "펜팔친구를 찾고 있어요!",
                     matchStatus: "매칭 중"
+                  });
+
+                  fetch(`=${this.state.myname}`, {
+                    method: "POST",
+                    headers: {
+                      "x-access-token": ""
+                    }
                   });
                 } else {
                   navigation.navigate("Send");

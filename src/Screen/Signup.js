@@ -18,7 +18,8 @@ import {
   CheckBox,
   Radio
 } from "native-base";
-import { StyleSheet, Alert } from "react-native";
+import { StyleSheet, Alert, AsyncStorage } from "react-native";
+import { SERVER_API } from "../api/API";
 
 const styles = StyleSheet.create({
   text: {
@@ -75,31 +76,20 @@ export default class Signup extends Component {
       if (!email.includes("@") && !email.includes(".")) {
         Alert.alert("", "email의 형식이 아닙니다.");
       } else {
-        Alert.alert("", "사용가능한 이메일 입니다.");
-        this.setState({
-          stateEmail: email,
-          statusEmail: true
-        });
-        // Alert.alert("","이미 같은 email이 존재 합니다.")
-
         //TODO: email형식을 지켰으면, DB안에 같은 데이터가 있는지 확인하고, 같은 데이터가 있으면 StausEmail 을 true로 바꾼다.
-        /*fetch(SAME_ID_API,{
-          method : "GET",
-          body : JSON.stringify({ email : email }),
-          headers: { "Contents-Type": "applsication/json" } 
-        }).then((res)=>{
-          if(rescode===202){
-            Alert.alert("","이미 같은 email이 존재 합니다.")
-            //빈칸으로 만들어주기
-          }
-          else if(rescode === 200){
-            Alert.alert("","사용가능한 이메일 입니다.")
-            this.setState({
-              stateEmail : email,
-              statusEmail : true  
-            })
-          }
-        })*/
+        fetch(SERVER_API + `/user/signup/overlapcheck?email=${email}`)
+          .then(res => {
+            if (res.status === 200) {
+              this.setState({
+                stateEmail: email,
+                statusEmail: true
+              });
+              return res.json();
+            } else if (res.status) {
+              return res.json();
+            }
+          })
+          .then(alert => Alert.alert("", alert));
       }
     } else {
       //TODO: 빈칸으로 넘기지 않도록 조건 추가
@@ -152,31 +142,22 @@ export default class Signup extends Component {
     const nickname = this.state.stateNickName;
     //console.log(nickname);
     if (nickname) {
-      Alert.alert("", "사용가능한 닉네임 입니다.");
-      this.setState({
-        stateNickName: nickname,
-        statusNickName: true
-      });
       // Alert.alert("","이미 같은 이름이 존재 합니다.")
-
+      const NICKNAME_API = `http://3.15.161.138:5000/user/signup/overlapcheck?nickname=${nickname}`;
       //TODO:  DB안에 같은 데이터가 있는지 확인하고, 같은 데이터가 있으면 StausNickName 을 true로 바꾼다.
-      /*fetch(SAME_NickName_API,{
-          method : "GET",
-          body : JSON.stringify({ nickname : nickname }),
-          headers: { "Contents-Type": "applsication/json" } 
-        }).then((res)=>{
-          if(rescode===202){
-            Alert.alert("","이미 같은 이름이 존재 합니다.")
-            //빈칸으로 만들어주기
-          }
-          else if(rescode === 200){
-             Alert.alert("","사용가능한 닉네임 입니다.")
+      fetch(NICKNAME_API)
+        .then(res => {
+          if (res.status === 200) {
             this.setState({
-              stateNickName : nickname,
-              statusNickName : true  
-            })
+              stateNickName: nickname,
+              statusNickName: true
+            });
+            return res.json();
+          } else if (res.status === 400) {
+            return res.json();
           }
-        })*/
+        })
+        .then(alert => Alert.alert("", alert));
     } else {
       //TODO: 빈칸으로 넘기지 않도록 조건 추가
       Alert.alert("", "닉네임을 작성해주셔야해요");
@@ -284,6 +265,7 @@ export default class Signup extends Component {
   }
   //7. 가입완료 버튼 클릭 기능
   compelteSignUp() {
+    const { navigation } = this.props;
     const {
       statusEmail,
       statusAgreeSelect,
@@ -300,7 +282,7 @@ export default class Signup extends Component {
       sex: this.state.stateSex,
       select: this.state.statePartner,
       blackList: [],
-      partner_nickName: null
+      partner_nickname: null
     };
     const status = [
       statusEmail,
@@ -315,53 +297,39 @@ export default class Signup extends Component {
     }
     console.log(statusPasswordMatch);
     //console.log(status.every(truthy));
-
-    Alert.alert("", "회원가입을 축하합니다!", [
-      {
-        text: "SignUP",
-        onPress: () =>
-          Alert.alert("", "회원가입완료! 메인화면으로 이동합니다.", [
+    if (status.every(truthy)) {
+      fetch(SERVER_API + `/user/signup`, {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: { "Content-Type": "application/json" }
+      }).then(res => {
+        if (res.status === 201) {
+          Alert.alert("", "회원가입완료 메인화면으로 이동합니다.", [
             {
-              text: "SignUp",
+              text: "SignUP",
               onPress: () => {
-                this.props.navigation.navigate("Home");
+                fetch(
+                  SERVER_API +
+                    `/user/signin?email=${
+                      this.state.stateEmailemail
+                    }&password=${this.state.statePassword}`
+                )
+                  .then(res => {
+                    //HOME화면으로 이동 , 토큰 저장
+                    return res.json();
+                  })
+                  .then(json => {
+                    AsyncStorage.setItem("token", json.token);
+                    navigation.navigate("Home");
+                  });
               }
             }
-          ])
-      }
-    ]);
-
-    //if (status.every(truthy)) {
-    //fetch(SIGINUP_API + "/user/signup", {
-    //  method: "POST",
-    //  body: JSON.stringify(body),
-    //  headers: { "Content-Type": "application/json" }
-    //});
-    //.then(res => {
-    //  if (resStatus === 200) {
-    //    Alert.alert("", "회원가입을 축하합니다!", [
-    //      {
-    //        text: "SignUP",
-    //        onPress: () => {
-    //          fetch(LOGIN_API, {
-    //            method: "GET",
-    //            body: JSON.stringify({
-    //              email: this.state.statusEmail,
-    //              password: this.state.statePassword
-    //            }),
-    //            headers: { "Contents-Type": "application/json" }
-    //          }).then(res => {
-    //            //HOME화면으로 이동 , 토큰 저장
-    //              this.props.navigation.navigate("Home")
-    //          });
-    //        }
-    //      }
-    //    ]);
-    //  }
-    //});
-    // } else {
-    // Alert.alert("", "비밀번호가 일치여부, 중복확인여부 확인필요");
-    // }
+          ]);
+        }
+      });
+    } else {
+      Alert.alert("", "비밀번호가 일치여부, 중복확인여부 확인필요");
+    }
   }
   render() {
     const { navigation } = this.props;

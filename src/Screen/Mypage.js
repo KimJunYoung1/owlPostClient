@@ -12,7 +12,8 @@ import {
   List
 } from "native-base";
 
-import { StyleSheet, Alert } from "react-native";
+import { StyleSheet, Alert, AsyncStorage } from "react-native";
+import { SERVER_API } from "../api/API";
 
 import AwesomeAlert from "react-native-awesome-alerts";
 
@@ -60,41 +61,48 @@ export default class Mypage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      partnerNickName: null,
+      partner_nickname: "ironman",
       sendLetters: 0,
       receiveLetters: 0
     };
   }
-  componentDidMount() {
-    //토큰 제출
-    //fetch(TOKEN_API)
-    //토큰인증을 통해 userinfo를 받아온뒤, 파트너 아이디의 여부에 따라 partnerNickName과 주고받은 편지의 수를 환산해서, setState를 해준다.
-  }
-  disConnect = () => {
-    const { partnerNickName } = this.state;
-    if (!partnerNickName) {
+  // componentDidMount() {
+  //   //토큰 제출
+  //   //fetch(TOKEN_API)
+  //   //토큰인증을 통해 userinfo를 받아온뒤, 파트너 아이디의 여부에 따라 partnerNickName과 주고받은 편지의 수를 환산해서, setState를 해준다.
+  // }
+  disConnect = async () => {
+    const { partner_nickname } = this.state;
+    const token = await AsyncStorage.getItem("token");
+
+    if (!partner_nickname) {
       Alert.alert("", "현재 파트너가 없어 이 기능을 사용할 수 없습니다.");
     } else {
-      Alert.alert("", partnerNickName + " 님 과의 인연을 끊으시겠습니까?", [
+      Alert.alert("", partner_nickname + " 님 과의 인연을 끊으시겠습니까?", [
         {
           text: "네",
           onPress: () => {
-            Alert.alert(
-              "",
-              partnerNickName + " 님 과의 인연이 성공적으로 끊어졌습니다."
-            );
-            /*  fetch(DISCONNECT_API, {
-              method:"POST",
-              headers : TOKEN
-            }).then(res=>{
-              if(요청오면){
-                this.setState({
-                  partnerNickName: null,
-                  sendLetters :  0,
-                  receiveLetters : 0
-                })
+            fetch(SERVER_API + `/check/cutmatch`, {
+              method: "PUT",
+              //토큰을 보낸다. 토큰은 MyPage에서 props로 가져온다.
+              headers: { "x-access-token": token }
+            }).then(res => {
+              if (res.status === 200) {
+                Alert.alert(
+                  "",
+                  partner_nickname + " 님 과의 인연이 성공적으로 끊어졌습니다.",
+                  {
+                    text: "ok",
+                    onPress: () =>
+                      this.setState({
+                        partner_nickname: null,
+                        sendLetters: 0,
+                        receiveLetters: 0
+                      })
+                  }
+                );
               }
-            }); */
+            });
           }
         },
         { text: "아니오" }
@@ -103,15 +111,17 @@ export default class Mypage extends Component {
   };
   addBlacklist = () => {
     const { navigation } = this.props;
-    const { partnerNickName } = this.state;
-    if (!partnerNickName) {
+    const { partner_nickname } = this.state;
+    if (!partner_nickname) {
       Alert.alert("", "현재 파트너가 없어 이 기능을 사용할 수 없습니다.");
     } else {
-      Alert.alert("", partnerNickName + " 님을 신고하시겠습니까?", [
+      Alert.alert("", partner_nickname + " 님을 신고하시겠습니까?", [
         {
           text: "네",
           onPress: () => {
-            navigation.navigate("AddBlackList");
+            navigation.navigate("AddBlackList", {
+              partner_nickname: this.state.partner_nickname
+            });
           }
         },
         { text: "아니오" }
@@ -134,13 +144,13 @@ export default class Mypage extends Component {
 
   render() {
     const { navigation } = this.props;
-    const { partnerNickName, sendLetters, receiveLetters } = this.state;
+    const { partner_nickname, sendLetters, receiveLetters } = this.state;
     const msg = [
-      `${partnerNickName} 님으로 부터 받은 편지 : ${receiveLetters} 통\n\n${partnerNickName} 님에게 보낸 편지 : ${sendLetters} 통`,
+      `${partner_nickname} 님으로 부터 받은 편지 : ${receiveLetters} 통\n\n${partner_nickname} 님에게 보낸 편지 : ${sendLetters} 통`,
       "현재 파트너가 없습니다."
     ];
     let connetMessage;
-    if (!partnerNickName) {
+    if (!partner_nickname) {
       connetMessage = msg[1];
     } else {
       connetMessage = msg[0];
@@ -165,6 +175,7 @@ export default class Mypage extends Component {
               rounded
               dark
               onPress={() => {
+                AsyncStorage.clear();
                 navigation.navigate("SignIn");
               }}
               style={styles.btn}
