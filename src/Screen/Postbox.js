@@ -12,7 +12,8 @@ import {
   Body,
   Right,
   Thumbnail,
-  CheckBox
+  CheckBox,
+  Spinner
 } from "native-base";
 
 import { StyleSheet } from "react-native";
@@ -46,6 +47,11 @@ const styles = StyleSheet.create({
   },
   posttime: {
     marginRight: "20%"
+  },
+  selectall: {
+    backgroundColor: "black",
+    position: "absolute",
+    left: 0
   }
 });
 export default class Postbox extends Component {
@@ -93,14 +99,18 @@ export default class Postbox extends Component {
     return (
       <Container>
         <Header style={styles.toplogo}>
-          <Text style={styles.logotext}>owlPost</Text>
-          <Button style={styles.deletebtn}>
+          <Button style={styles.selectall}>
             <Text>삭제</Text>
+          </Button>
+          <Text style={styles.logotext}>owlPost</Text>
+
+          <Button style={styles.deletebtn}>
+            <Text>전체선택</Text>
           </Button>
         </Header>
 
         {letters === null ? (
-          <Text>로드안댐?</Text>
+          <Spinner color="blue" />
         ) : (
           letters.toData.map((ele, idx) => (
             <List
@@ -110,14 +120,9 @@ export default class Postbox extends Component {
               <ListItem
                 avatar
                 onPress={() => {
-                  navigation.navigate(
-                    "Letter",
-                    {
-                      letters: this.state.letters
-                      // props 내려주는 것도 다시 생각..
-                    },
-                    idx
-                  );
+                  navigation.navigate("Letter", {
+                    ele: ele
+                  });
                 }}
               >
                 <Left>
@@ -130,14 +135,27 @@ export default class Postbox extends Component {
                 </Left>
                 <Body>
                   <Text>{ele.from}</Text>
-                  <Text note>{ele.messages}</Text>
+
+                  {ele.messages.length < 25 ? (
+                    <Text note>{ele.messages}</Text>
+                  ) : (
+                    <Text note>{ele.messages.slice(0, 20)}..... </Text>
+                  )}
                 </Body>
                 <Right>
                   <Text note style={styles.posttime}>
                     {ele.time}
                   </Text>
 
-                  <CheckBox />
+                  <CheckBox
+                    onPress={() => {
+                      // let boxIdx = idx;
+                      // this.setState({
+                      //   [boxIdx]: true
+                      // });
+                    }}
+                    checked={false}
+                  />
                 </Right>
               </ListItem>
             </List>

@@ -83,48 +83,38 @@ export default class Home extends Component {
   componentDidMount() {
     let AllUserInfo =
       "http://3.15.161.138:5000/user/signin?email=junYoung@naver.com&password=123";
-    fetch(AllUserInfo)
-      .then(res => res.json())
-      .then(res => {
-        console.log("!!!!!!!!!", res);
+    setInterval(() => {
+      fetch(AllUserInfo)
+        .then(res => res.json())
+        .then(res => {
+          console.log("!!!!!!!!!", res);
 
-        if (res.result.partner_nickname === null) {
-          this.setState({
-            matchComplete: false
-          });
-          if (this.state.matchStatus === "매칭 중") {
+          if (res.result.partner_nickname === null) {
             this.setState({
-              matchStatus: "매칭 중"
+              matchComplete: false,
+              myname: res.result.nickname
             });
+            if (this.state.matchStatus === "매칭 중") {
+              this.setState({
+                matchStatus: "매칭 중",
+                myname: res.result.nickname
+              });
+            } else {
+              this.setState({
+                matchStatus: "매칭시작",
+                myname: res.result.nickname
+              });
+            }
           } else {
             this.setState({
-              matchStatus: "매칭시작"
+              matchComplete: true,
+              partner: res.result.partner_nickname,
+              matchStatus: "편지 쓰기",
+              myname: res.result.nickname
             });
           }
-        } else {
-          this.setState({
-            matchComplete: true,
-            partner: res.result.partner_nickname,
-            matchStatus: "편지 쓰기"
-          });
-        }
-      });
-
-    // fetch(Letter)
-    //     .then(res => res.json())
-    //     .then(res => {
-    //       if(편지창에 변화가 있다면?---> 이 조건을 어케하지??){
-    //         this.setState({
-    //           postStatus : true
-    //         });
-    //       }
-    //       this.setState({
-    //         postStatus : false
-    //       });
-    //     });
-    // 알럿트를 보고 편지함을 들어가면! if (t <= 0)
-
-    // 상대방이 있고 상대방 편지가 출발했을 때
+        });
+    }, 60000);
 
     if (this.state.matchComplete && this.state.postStatus) {
       // 여기도 fench 써서 아예 받아올 예정.
@@ -174,6 +164,22 @@ export default class Home extends Component {
       }, 60000);
       // 처음에 한 번 띄워주고 하는 법을 생각해보자 ㅠ_ㅠ
     }
+
+    // fetch(Letter)
+    //     .then(res => res.json())
+    //     .then(res => {
+    //       if(편지창에 변화가 있다면?---> 이 조건을 어케하지??){
+    //         this.setState({
+    //           postStatus : true
+    //         });
+    //       }
+    //       this.setState({
+    //         postStatus : false
+    //       });
+    //     });
+    // 알럿트를 보고 편지함을 들어가면! if (t <= 0)
+
+    // 상대방이 있고 상대방 편지가 출발했을 때
   }
 
   render() {
@@ -250,6 +256,19 @@ export default class Home extends Component {
                     subText: "펜팔친구를 찾고 있어요!",
                     matchStatus: "매칭 중"
                   });
+
+                  fetch(
+                    `http://3.15.161.138:5000/check/match?nickname=${
+                      this.state.myname
+                    }`,
+                    {
+                      method: "POST",
+                      headers: {
+                        "x-access-token":
+                          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imp1bllvdW5nQG5hdmVyLmNvbSIsImlhdCI6MTU2MzI0NjcyOSwiZXhwIjoxNTYzMjY0NzI5fQ.osuHrHMrx7FUohnQGLZGrtr8Qp8hzmG5w0LZnrkFrMI"
+                      }
+                    }
+                  );
                 } else {
                   navigation.navigate("Send");
                 }
