@@ -34,7 +34,7 @@ export default class SignIn extends Component {
           if (res.status === 200) {
             return res.json();
           } else if (res.status === 400) {
-            Alert.alert("", "등록되지 않은 정보 입니다.");
+            return;
           }
         })
         .then(async json => {
@@ -43,7 +43,8 @@ export default class SignIn extends Component {
           AsyncStorage.setItem("token", json.token);
           //홈화면으로 이동
           navigation.navigate("Home");
-        });
+        })
+        .catch(err => Alert.alert("", "등록되지 않은 정보 입니다."));
     } else {
       alert("아이디와 패스워드를 정확히 입력하세요");
     }
