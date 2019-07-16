@@ -61,6 +61,7 @@ export default class Mypage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      nickname: null,
       partner_nickname: null,
       sendLetters: 0,
       receiveLetters: 0
@@ -82,6 +83,7 @@ export default class Mypage extends Component {
       .then(json => {
         console.log(json);
         this.setState({
+          nickname: json.nickname,
           partner_nickname: json.partner_nickname,
           sendLetters: json.fromData.length,
           receiveLetters: json.toData.length
@@ -110,32 +112,34 @@ export default class Mypage extends Component {
               headers: { "x-access-token": token }
             })
               .then(res => {
-                if (res.status === 200) {
-                  Alert.alert(
-                    "",
-                    partner_nickname +
-                      " 님 과의 인연이 성공적으로 끊어졌습니다.",
-                    {
-                      text: "ok",
-                      onPress: () =>
-                        this.setState({
-                          partner_nickname: null,
-                          sendLetters: 0,
-                          receiveLetters: 0
-                        })
-                    }
-                  );
+                if (res.status === 201) {
+                  return "ok";
+                } else if (res.status === 400) {
+                  return;
                 }
               })
-              .catch(err => {
-                Alert.alert("", "현재 파트너가 없는 상태 입니다.");
-              });
+              .catch(err =>
+                Alert.alert(
+                  "",
+                  partner_nickname + " 님 과의 인연이 성공적으로 끊어졌습니다.",
+                  {
+                    text: ok,
+                    onPress: () =>
+                      this.setState({
+                        partner_nickname: null,
+                        sendLetters: 0,
+                        receiveLetters: 0
+                      })
+                  }
+                )
+              );
           }
         },
         { text: "아니오" }
       ]);
     }
   };
+
   addBlacklist = () => {
     const { navigation } = this.props;
     const { partner_nickname } = this.state;
@@ -147,7 +151,7 @@ export default class Mypage extends Component {
           text: "네",
           onPress: () => {
             navigation.navigate("AddBlackList", {
-              partner_nickname: this.state.partner_nickname
+              nickname: this.state.nickname
             });
           }
         },

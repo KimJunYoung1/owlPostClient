@@ -63,21 +63,27 @@ export default class AddBlackList extends Component {
             const token = await AsyncStorage.getItem("token");
             console.log(SERVER_API);
             console.log(token);
+            const myheaders = new Headers({
+              "Contents-type": "application/json",
+              "x-access-token": token
+            });
             fetch(SERVER_API + "/check/withdrawal", {
               method: "DELETE",
-              headers: { "x-access-token": token }
-            }).then(res => {
-              console.log(res);
-            });
-            /*fetch(DELETE_API,{
-              method:"DELETE"
-             //토큰을 보낸다.+
-               }).then(res=>{
-             if(resCode===200){
-            Alert.alert("제출완료","좋은의견 감사합니다.\n항상 노력하는 owlPost가 되겠습니다.\n다음에 또 이용해주세요!",{text : "ok",onPress:()=>navigation.navigate("SignIn")})
-            //토큰 제거
-                  }
-              })*/
+              headers: {
+                "x-access-token": token
+              }
+            })
+              .then(res => {
+                if (res.status === 200) {
+                  Alert.alert(
+                    "제출완료",
+                    "좋은의견 감사합니다.\n항상 노력하는 owlPost가 되겠습니다.\n다음에 또 이용해주세요!",
+                    { text: "ok", onPress: () => navigation.navigate("SignIn") }
+                  );
+                }
+              })
+              .then(json => console.log(json))
+              .catch(err => console.log(err));
           }
         }
       ]
