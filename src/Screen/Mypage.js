@@ -72,7 +72,13 @@ export default class Mypage extends Component {
     fetch(SERVER_API + "/check/mypage", {
       headers: { "x-access-token": token }
     })
-      .then(res => res.json())
+      .then(res => {
+        if (res.status === 200) {
+          return res.json();
+        } else if (res.status) {
+          return;
+        }
+      })
       .then(json => {
         console.log(json);
         this.setState({
