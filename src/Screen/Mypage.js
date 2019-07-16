@@ -13,7 +13,7 @@ import {
 } from "native-base";
 
 import { StyleSheet, Alert, AsyncStorage } from "react-native";
-import { SERVER_API } from "../Component/API";
+import { SERVER_API } from "../api/API";
 
 import AwesomeAlert from "react-native-awesome-alerts";
 
