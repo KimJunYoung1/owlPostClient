@@ -4,6 +4,7 @@ import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
 import NaviApp from "./src/Screen/NaviApp";
 import SignNavi from "./src/Screen/SignNavi";
+import { AsyncStorage } from "react-native";
 
 export default class App extends Component {
   constructor(props) {
@@ -24,6 +25,17 @@ export default class App extends Component {
       loading: false
     });
     // 토큰 (로그아웃 or 회원탈퇴) 이 없어지면 loginStatus false 로 변경
+    const token = await AsyncStorage.getItem("token");
+    console.log(token);
+    if (!token) {
+      this.setState({
+        logInStatus: false
+      });
+    } else {
+      this.setState({
+        logInStatus: true
+      });
+    }
   }
 
   render() {
