@@ -56,25 +56,25 @@ const styles = StyleSheet.create({
 export default class Letter extends Component {
   constructor(props) {
     super(props); // --> slice 안 한 편지 통째로 내용을 받음.
+
     this.state = {
-      letters: this.props.navigation.state.params.letters
+      ele: this.props.navigation.state.params.ele
     };
   }
   render() {
-    const { letters } = this.state;
     const { navigation } = this.props;
-    //const { ??? } = this.props
+    const { ele } = this.state;
     return (
       <Container>
         <Header style={styles.toplogo}>
           <Text style={styles.logotext}>owlPost</Text>
         </Header>
-        <Text style={styles.to}> To. {letters[0].to} </Text>
+        <Text style={styles.to}> To. {ele.to} </Text>
         <Body>
-          <Text>{letters[0].letter}</Text>
+          <Text>{ele.messages}</Text>
         </Body>
-        <Text style={styles.time}>{letters[0].time}</Text>
-        <Text style={styles.from}>From. {letters[0].from} </Text>
+        <Text style={styles.time}>{ele.time}</Text>
+        <Text style={styles.from}>From. {ele.from} </Text>
         <Footer>
           <FooterTab>
             <Button
