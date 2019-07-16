@@ -11,7 +11,7 @@ import {
   Icon
 } from "native-base";
 import { StyleSheet, Alert, AsyncStorage } from "react-native";
-import { SERVER_API } from "../Component/API";
+import { SERVER_API } from "../api/API";
 
 // if (statuscode === 200) {
 //   //이때 토큰을 받아서 저장한다.

@@ -19,7 +19,7 @@ import {
   Radio
 } from "native-base";
 import { StyleSheet, Alert, AsyncStorage } from "react-native";
-import { SERVER_API } from "../Component/API";
+import { SERVER_API } from "../api/API";
 
 const styles = StyleSheet.create({
   text: {
