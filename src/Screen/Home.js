@@ -82,8 +82,45 @@ export default class Home extends Component {
   };
 
   async componentDidMount() {
-    let AllUserInfo = `${SERVER_API}`;
+    let AllUserInfo = `${SERVER_API}/check/home`;
     const token = await AsyncStorage.getItem("token");
+    this.setState({
+      token: token
+    });
+    fetch(AllUserInfo, {
+      headers: {
+        "x-access-token": token
+      }
+    })
+      .then(res => res.json())
+      .then(res => {
+        console.log("!!!!!!!!!", res);
+
+        if (res.user.partner_nickname === null) {
+          this.setState({
+            matchComplete: false,
+            myname: res.user.nickname
+          });
+          if (this.state.matchStatus === "매칭 중") {
+            this.setState({
+              matchStatus: "매칭 중",
+              myname: res.user.nickname
+            });
+          } else {
+            this.setState({
+              matchStatus: "매칭시작",
+              myname: res.user.nickname
+            });
+          }
+        } else {
+          this.setState({
+            matchComplete: true,
+            partner: res.user.partner_nickname,
+            matchStatus: "편지 쓰기",
+            myname: res.user.nickname
+          });
+        }
+      });
     setInterval(() => {
       fetch(AllUserInfo, {
         headers: {
@@ -94,28 +131,28 @@ export default class Home extends Component {
         .then(res => {
           console.log("!!!!!!!!!", res);
 
-          if (res.result.partner_nickname === null) {
+          if (res.user.partner_nickname === null) {
             this.setState({
               matchComplete: false,
-              myname: res.result.nickname
+              myname: res.user.nickname
             });
             if (this.state.matchStatus === "매칭 중") {
               this.setState({
                 matchStatus: "매칭 중",
-                myname: res.result.nickname
+                myname: res.user.nickname
               });
             } else {
               this.setState({
                 matchStatus: "매칭시작",
-                myname: res.result.nickname
+                myname: res.user.nickname
               });
             }
           } else {
             this.setState({
               matchComplete: true,
-              partner: res.result.partner_nickname,
+              partner: res.user.partner_nickname,
               matchStatus: "편지 쓰기",
-              myname: res.result.nickname
+              myname: res.user.nickname
             });
           }
         });
@@ -268,10 +305,12 @@ export default class Home extends Component {
                       // ---------------> ㅁㅐ칭요청
                       method: "POST",
                       headers: {
-                        "x-access-token": ""
+                        "x-access-token": this.state.token
                       }
                     }
-                  ).then(res => console.log("!!!!!!!!!!!!!!!!", res));
+                  ).then(res =>
+                    console.log("!!!!!!!!!!!!!!!!", res, this.state.token)
+                  );
                 } else {
                   navigation.navigate("Send");
                 }
