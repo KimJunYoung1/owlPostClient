@@ -29,6 +29,12 @@ export default class SignIn extends Component {
       //console.log(process.env.SERVER_URL);
       //TODO : 서버에 회원인지 아닌지 확인 요청(GET)을 하기
       //console.log(LOGIN_API);
+
+      //fetch(SERVER_API + `/user/signin`,{
+      //  method:"GET",
+      //  body: JSON.stringify({email:email,password:password}),
+      //  headers : {'Content-Type':"application/json"}
+      //})
       fetch(SERVER_API + `/user/signin?email=${email}&password=${password}`)
         .then(res => {
           if (res.status === 200) {
