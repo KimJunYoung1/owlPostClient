@@ -85,7 +85,7 @@ export default class Signup extends Component {
                 statusEmail: true
               });
               return res.json();
-            } else if (res.status) {
+            } else if (res.status === 400) {
               return res.json();
             }
           })
@@ -321,6 +321,9 @@ export default class Signup extends Component {
                   .then(json => {
                     AsyncStorage.setItem("token", json.token);
                     navigation.navigate("Home");
+                  })
+                  .catch(err => {
+                    Alert.alert("", "회원가입완료 메인화면으로 이동합니다.");
                   });
               }
             }

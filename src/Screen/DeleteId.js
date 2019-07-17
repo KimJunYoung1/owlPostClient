@@ -12,8 +12,9 @@ import {
   FooterTab,
   Icon
 } from "native-base";
-import { StyleSheet, Alert } from "react-native";
+import { StyleSheet, Alert, AsyncStorage } from "react-native";
 import React, { Component } from "react";
+import { SERVER_API } from "../api/API";
 
 const styles = StyleSheet.create({
   toplogo: {
@@ -58,18 +59,32 @@ export default class AddBlackList extends Component {
       [
         {
           text: "ok",
-          onPress: () => {
-            navigation.navigate("SignIn");
+          onPress: async () => {
+            const token = await AsyncStorage.getItem("token");
+            console.log(SERVER_API);
+            console.log(token);
+            const myheaders = new Headers({
+              "Contents-type": "application/json",
+              "x-access-token": token
+            });
+            fetch(SERVER_API + "/check/withdrawal", {
+              method: "DELETE",
+              headers: {
+                "x-access-token": token
+              }
+            })
+              .then(res => {
+                if (res.status === 200) {
+                  Alert.alert(
+                    "제출완료",
+                    "좋은의견 감사합니다.\n항상 노력하는 owlPost가 되겠습니다.\n다음에 또 이용해주세요!",
+                    { text: "ok", onPress: () => navigation.navigate("SignIn") }
+                  );
+                }
+              })
+              .then(json => console.log(json))
+              .catch(err => console.log(err));
           }
-          /*fetch(DELETE_API,{
-              method:"DELETE"
-             //토큰을 보낸다. 토큰은 MyPage에서 props로 가져온다. 
-               }).then(res=>{
-             if(resCode===200){
-            Alert.alert("제출완료","좋은의견 감사합니다.\n항상 노력하는 owlPost가 되겠습니다.\n다음에 또 이용해주세요!",{text : "ok",onPress:()=>navigation.navigate("SignIn")})
-            //토큰 제거
-                  }
-              })*/
         }
       ]
     );

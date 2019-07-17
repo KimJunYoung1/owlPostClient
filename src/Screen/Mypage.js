@@ -61,16 +61,40 @@ export default class Mypage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      partner_nickname: "ironman",
+      nickname: null,
+      partner_nickname: null,
       sendLetters: 0,
       receiveLetters: 0
     };
   }
-  // componentDidMount() {
-  //   //토큰 제출
-  //   //fetch(TOKEN_API)
-  //   //토큰인증을 통해 userinfo를 받아온뒤, 파트너 아이디의 여부에 따라 partnerNickName과 주고받은 편지의 수를 환산해서, setState를 해준다.
-  // }
+  async componentDidMount() {
+    //토큰 제출
+    const token = await AsyncStorage.getItem("token");
+    fetch(SERVER_API + "/check/mypage", {
+      headers: { "x-access-token": token }
+    })
+      .then(res => {
+        if (res.status === 200) {
+          return res.json();
+        } else if (res.status) {
+          return;
+        }
+      })
+      .then(json => {
+        console.log(json);
+        this.setState({
+          nickname: json.nickname,
+          partner_nickname: json.partner_nickname,
+          sendLetters: json.fromData.length,
+          receiveLetters: json.toData.length
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+    //토큰인증을 통해 userinfo를 받아온뒤, 파트너 아이디의 여부에 따라 partnerNickName과 주고받은 편지의 수를 환산해서, setState를 해준다.
+  }
   disConnect = async () => {
     const { partner_nickname } = this.state;
     const token = await AsyncStorage.getItem("token");
@@ -86,13 +110,20 @@ export default class Mypage extends Component {
               method: "PUT",
               //토큰을 보낸다. 토큰은 MyPage에서 props로 가져온다.
               headers: { "x-access-token": token }
-            }).then(res => {
-              if (res.status === 200) {
+            })
+              .then(res => {
+                if (res.status === 201) {
+                  return "ok";
+                } else if (res.status === 400) {
+                  return;
+                }
+              })
+              .catch(err =>
                 Alert.alert(
                   "",
                   partner_nickname + " 님 과의 인연이 성공적으로 끊어졌습니다.",
                   {
-                    text: "ok",
+                    text: ok,
                     onPress: () =>
                       this.setState({
                         partner_nickname: null,
@@ -100,15 +131,15 @@ export default class Mypage extends Component {
                         receiveLetters: 0
                       })
                   }
-                );
-              }
-            });
+                )
+              );
           }
         },
         { text: "아니오" }
       ]);
     }
   };
+
   addBlacklist = () => {
     const { navigation } = this.props;
     const { partner_nickname } = this.state;
@@ -120,7 +151,7 @@ export default class Mypage extends Component {
           text: "네",
           onPress: () => {
             navigation.navigate("AddBlackList", {
-              partner_nickname: this.state.partner_nickname
+              nickname: this.state.nickname
             });
           }
         },

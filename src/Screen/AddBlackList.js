@@ -14,6 +14,7 @@ import {
 } from "native-base";
 import { StyleSheet, Alert, AsyncStorage } from "react-native";
 import React, { Component } from "react";
+import { SERVER_API } from "../api/API";
 
 const styles = StyleSheet.create({
   toplogo: {
@@ -51,37 +52,38 @@ export default class AddBlackList extends Component {
     };
   }
   Submit = async () => {
-    //const myNickName = this.props.navigation.state.params.partnerNickName;
+    const nickname = this.props.navigation.state.params.nickname;
     const { navigation } = this.props;
-    //console.log(token);
+    //console.log(nickname);
     const token = await AsyncStorage.getItem("token");
-    //Alert.alert(
-    //  "제출 완료",
-    //  "불편을 드려 죄송합니다.\n항상 노력하는 owlPost가 되겠습니다.",
-    //  [
-    //    {
-    //      text: "ok",
-    //      onPress: () => {
-    //       // const BLACKLIST_API = `http://3.15.161.138:5000/blacklist?nickname=${myNickName}`;
-    //        //console.log(token);
-    //        fetch(BLACKLIST_API, {
-    //          method: "POST",
-    //          //토큰을 보낸다.
-    //          headers: { "x-access-token": token }
-    //        }).then(res => {
-    //          console.log(res);
-    //          //if (res.status === 200) {
-    //          // Alert.alert(
-    //          //    "제출완료",
-    //          //   "불편을 드려 죄송합니다.\n항상 노력하는 owlPost가 되겠습니다.",
-    //          //    { text: "ok", onPress: () => navigation.navigate("Mypage") }
-    //          //  );
-    //          //}
-    //        });
-    //      }
-    //    }
-    //  ]
-    //);
+    Alert.alert(
+      "제출 완료",
+      "불편을 드려 죄송합니다.\n항상 노력하는 owlPost가 되겠습니다.",
+      [
+        {
+          text: "ok",
+          onPress: () => {
+            //console.log(token);
+            fetch(SERVER_API + `/check/blacklist?nickname=${nickname}`, {
+              method: "POST",
+              //토큰을 보낸다.
+              headers: { "x-access-token": token }
+            }).then(res => {
+              console.log(res);
+              if (res.status === 200) {
+                console.log("들어오니?");
+                navigation.goBack();
+                //Alert.alert(
+                //  "제출완료",
+                //  "불편을 드려 죄송합니다.\n항상 노력하는 owlPost가 되겠습니다.",
+                //  { text: "ok", onPress: () => navigation.navigate("Mypage") }
+                //);
+              }
+            });
+          }
+        }
+      ]
+    );
   };
   render() {
     const blacklistReason = [
