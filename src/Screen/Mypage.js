@@ -113,26 +113,26 @@ export default class Mypage extends Component {
             })
               .then(res => {
                 if (res.status === 201) {
-                  return "ok";
+                  return res.json();
                 } else if (res.status === 400) {
-                  return;
+                  return res.json();
                 }
               })
-              .catch(err =>
-                Alert.alert(
-                  "",
-                  partner_nickname + " 님 과의 인연이 성공적으로 끊어졌습니다.",
+              .then(json =>
+                Alert.alert("", json, [
                   {
-                    text: ok,
-                    onPress: () =>
+                    text: "확인",
+                    onPress: () => {
                       this.setState({
                         partner_nickname: null,
                         sendLetters: 0,
                         receiveLetters: 0
-                      })
+                      });
+                    }
                   }
-                )
-              );
+                ])
+              )
+              .catch(err => console.log(err));
           }
         },
         { text: "아니오" }
@@ -206,8 +206,16 @@ export default class Mypage extends Component {
               rounded
               dark
               onPress={() => {
-                AsyncStorage.clear();
-                navigation.navigate("SignIn");
+                Alert.alert("", "로그아웃하시겠습니까?", [
+                  {
+                    text: "네",
+                    onPress: () => {
+                      AsyncStorage.clear();
+                      navigation.navigate("SignIn");
+                    }
+                  },
+                  { text: "아니오" }
+                ]);
               }}
               style={styles.btn}
             >

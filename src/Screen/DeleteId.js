@@ -10,7 +10,8 @@ import {
   Right,
   Footer,
   FooterTab,
-  Icon
+  Icon,
+  Toast
 } from "native-base";
 import { StyleSheet, Alert, AsyncStorage } from "react-native";
 import React, { Component } from "react";
@@ -63,10 +64,6 @@ export default class AddBlackList extends Component {
             const token = await AsyncStorage.getItem("token");
             console.log(SERVER_API);
             console.log(token);
-            const myheaders = new Headers({
-              "Contents-type": "application/json",
-              "x-access-token": token
-            });
             fetch(SERVER_API + "/check/withdrawal", {
               method: "DELETE",
               headers: {
@@ -75,14 +72,20 @@ export default class AddBlackList extends Component {
             })
               .then(res => {
                 if (res.status === 200) {
-                  Alert.alert(
-                    "제출완료",
-                    "좋은의견 감사합니다.\n항상 노력하는 owlPost가 되겠습니다.\n다음에 또 이용해주세요!",
-                    { text: "ok", onPress: () => navigation.navigate("SignIn") }
-                  );
+                  return res.json();
                 }
               })
-              .then(json => console.log(json))
+              .then(json => {
+                AsyncStorage.clear();
+                Alert.alert("", json, [
+                  {
+                    text: "확인",
+                    onPress: () => {
+                      navigation.navigate("SignIn");
+                    }
+                  }
+                ]);
+              })
               .catch(err => console.log(err));
           }
         }
@@ -104,7 +107,6 @@ export default class AddBlackList extends Component {
           <Text style={styles.logotext}>owlPost</Text>
         </Header>
         <Content>
-          <Text style={styles.maintext}>고객의 소리</Text>
           <Text style={styles.ask}>
             서비스의 어느부분이 가장 마음에 안드셨나요?
           </Text>

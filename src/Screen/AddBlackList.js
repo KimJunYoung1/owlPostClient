@@ -68,18 +68,25 @@ export default class AddBlackList extends Component {
               method: "POST",
               //토큰을 보낸다.
               headers: { "x-access-token": token }
-            }).then(res => {
-              console.log(res);
-              if (res.status === 200) {
-                console.log("들어오니?");
-                navigation.goBack();
-                //Alert.alert(
-                //  "제출완료",
-                //  "불편을 드려 죄송합니다.\n항상 노력하는 owlPost가 되겠습니다.",
-                //  { text: "ok", onPress: () => navigation.navigate("Mypage") }
-                //);
-              }
-            });
+            })
+              .then(res => {
+                console.log(res);
+                if (res.status === 200) {
+                  return res.json();
+                }
+              })
+              .then(json => {
+                console.log(json);
+                Alert.alert("", json, [
+                  {
+                    text: "확인",
+                    onPress: () => {
+                      navigation.goBack();
+                    }
+                  }
+                ]);
+              })
+              .catch(err => console.log(err));
           }
         }
       ]
@@ -100,7 +107,6 @@ export default class AddBlackList extends Component {
           <Text style={styles.logotext}>owlPost</Text>
         </Header>
         <Content>
-          <Text style={styles.maintext}>고객의 소리</Text>
           <Text style={styles.ask}>
             파트너가 어떤 점을 가장 불편하게 만드셨나요?
           </Text>
