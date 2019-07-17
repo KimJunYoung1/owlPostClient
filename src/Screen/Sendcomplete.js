@@ -13,7 +13,7 @@ import {
   Right,
   Thumbnail
 } from "native-base";
-
+import NumericInput from "react-native-numeric-input";
 import { StyleSheet, Alert } from "react-native";
 
 const styles = StyleSheet.create({
@@ -51,6 +51,46 @@ export default class Sendcomplete extends Component {
           <Text style={styles.logotext}>owlPost</Text>
         </Header>
         <Container>
+          <NumericInput type="up-down" onChange={value => console.log(value)} />
+          {/* <NumericInput
+            value={this.state.value}
+            minValue={1}
+            maxValue={12}
+            initValue={1}
+            type={"up-down"}
+            onChange={value => this.setState({ value })}
+            onLimitReached={(isMax, msg) => console.log(isMax, msg)}
+            totalWidth={240}
+            totalHeight={50}
+            iconSize={25}
+            step={1}
+            valueType="real"
+            rounded
+            textColor="#B0228C"
+            iconStyle={{ color: "white" }}
+            rightButtonBackgroundColor="#EA3788"
+            leftButtonBackgroundColor="#E56B70"
+          />
+
+          <NumericInput
+            value={this.state.values}
+            minValue={0}
+            maxValue={59}
+            initValue={0}
+            onChange={values => this.setState({ values })}
+            onLimitReached={(isMax, msg) => console.log(isMax, msg)}
+            totalWidth={240}
+            totalHeight={50}
+            iconSize={25}
+            step={1}
+            valueType="real"
+            rounded
+            textColor="#B0228C"
+            iconStyle={{ color: "white" }}
+            rightButtonBackgroundColor="#EA3788"
+            leftButtonBackgroundColor="#E56B70"
+          /> */}
+
           <Button
             rounded
             dark

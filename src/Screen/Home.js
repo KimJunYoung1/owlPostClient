@@ -66,7 +66,7 @@ export default class Home extends Component {
       postStatus: false,
       // fetch res.date ? null ? true : false
       // 상대가 편지를 보냈으면 true , default = false -> true 면 또 변경.
-      arriveTime: "07/17/19   22:00", //  현재 fake값 , null에서 요청으로 받는 값으로 쓸 예정
+      arriveTime: "07/18/19   22:00", //  현재 fake값 , null에서 요청으로 받는 값으로 쓸 예정
       // get 요청으로 받을 값이 들어갈 예정.
       date: null,
       // 여기에 도착예정 시간과 현재시간을 계산한 카운터 값이 들어가거나 , 편지도착알림 텍스트가 띄워진다.
@@ -114,13 +114,16 @@ export default class Home extends Component {
           }
         } else {
           this.setState({
+            // 편지는 계속 비교
             matchComplete: true,
             partner: res.user.partner_nickname,
             matchStatus: "편지 쓰기",
             myname: res.user.nickname
           });
         }
-      });
+      })
+      .catch(err => console.log(err));
+
     setInterval(() => {
       fetch(AllUserInfo, {
         headers: {
@@ -155,8 +158,9 @@ export default class Home extends Component {
               myname: res.user.nickname
             });
           }
-        });
-    }, 60000);
+        })
+        .catch(err => console.log(err));
+    }, 5000);
 
     if (this.state.matchComplete && this.state.postStatus) {
       // 여기도 fench 써서 아예 받아올 예정.
@@ -168,20 +172,7 @@ export default class Home extends Component {
       let days = Math.floor(t / (1000 * 60 * 60 * 24));
       let hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       let minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
-      if (t <= 0) {
-        clearInterval(x);
-        this.setState({
-          date: null
-        });
-        this.setState({
-          showAlert: true
-        });
-      } else {
-        this.setState({
-          date:
-            "편지 도착까지, " + days + "일 " + hours + "시간 " + minutes + "분"
-        });
-      }
+
       let x = setInterval(() => {
         if (t <= 0) {
           clearInterval(x);
@@ -204,6 +195,21 @@ export default class Home extends Component {
           });
         }
       }, 60000);
+
+      if (t <= 0) {
+        clearInterval(x);
+        this.setState({
+          date: null
+        });
+        this.setState({
+          showAlert: true
+        });
+      } else {
+        this.setState({
+          date:
+            "편지 도착까지, " + days + "일 " + hours + "시간 " + minutes + "분"
+        });
+      }
       // 처음에 한 번 띄워주고 하는 법을 생각해보자 ㅠ_ㅠ
     }
 
@@ -308,9 +314,11 @@ export default class Home extends Component {
                         "x-access-token": this.state.token
                       }
                     }
-                  ).then(res => {
-                    console.log("!!!!!!!!!!!!!!!!", res, this.state.token);
-                  });
+                  )
+                    .then(res => {
+                      console.log("!!!!!!!!!!!!!!!!", res, this.state.token);
+                    })
+                    .catch(err => console.log(err));
                 } else {
                   navigation.navigate("Send");
                 }

@@ -41,18 +41,9 @@ const styles = StyleSheet.create({
   footer: {
     backgroundColor: "black"
   },
-  deletebtn: {
-    backgroundColor: "black",
-    position: "absolute",
-    right: 0
-  },
+
   posttime: {
     marginRight: "20%"
-  },
-  selectall: {
-    backgroundColor: "black",
-    position: "absolute",
-    left: 0
   }
 });
 export default class Postbox extends Component {
@@ -94,11 +85,34 @@ export default class Postbox extends Component {
         });
         console.log(res);
         console.log("여기 맞지???state ====>", this.state.letters);
-      });
+      })
+      .catch(err => console.log(err));
+
+    setInterval(() => {
+      fetch(PostURL, {
+        headers: {
+          "x-access-token": token
+        }
+      })
+        .then(res => res.json())
+        // .then(res => res.toData)
+        .then(res => {
+          console.log(res);
+          this.setState({
+            letters: res
+          });
+          console.log(res);
+          console.log("여기 맞지???state ====>", this.state.letters);
+        })
+        .catch(err => console.log(err));
+    }, 50000);
+    // home 에서 props 로 편지도착상태알림이오면 실행으로 변경 예정
   }
 
+  // 실행이 안되네 바로 .. 패치요청 비동기?에러처리?
   afterDeleteReset = () => {
-    let PostURL = `${SERVER_API}check/postbox`; // 삭제할 때 다시 겟
+    //console.log("실행되니?????????????");
+    let PostURL = `${SERVER_API}/check/postbox`; // 삭제할 때 다시 겟
 
     fetch(PostURL, {
       headers: {
@@ -106,14 +120,16 @@ export default class Postbox extends Component {
       }
     })
       .then(res => res.json())
-      // .then(res => res.toData)
+      //.then(res => res.json())
       .then(res => {
+        // console.log(res);
         this.setState({
           letters: res
         });
-        console.log(res);
-        console.log("여기 맞지???state ====>", this.state.letters);
-      });
+        //console.log(res);
+        //console.log("여기 맞지???state ====>", this.state.letters);
+      })
+      .catch(err => console.log(err));
   };
 
   render() {
@@ -122,14 +138,7 @@ export default class Postbox extends Component {
     return (
       <Container>
         <Header style={styles.toplogo}>
-          <Button style={styles.selectall}>
-            <Text>삭제</Text>
-          </Button>
           <Text style={styles.logotext}>owlPost</Text>
-
-          <Button style={styles.deletebtn}>
-            <Text>전체선택</Text>
-          </Button>
         </Header>
 
         {letters === null ? (
@@ -174,7 +183,7 @@ export default class Postbox extends Component {
 
                   <Button
                     onPress={() => {
-                      console.log(this.state.token);
+                      //console.log(this.state.token);
                       fetch(`${SERVER_API}/check/deleteletter`, {
                         method: "DELETE",
                         body: JSON.stringify({
@@ -196,13 +205,10 @@ export default class Postbox extends Component {
                           Alert.alert("", res, [
                             {
                               text: "ok",
-                              onPress: () => {
-                                this.afterDeleteReset();
-                              }
+                              onPress: () => this.afterDeleteReset()
                             }
                           ])
                         )
-
                         .catch(err => console.log(err));
                     }}
                   >
