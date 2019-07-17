@@ -94,11 +94,14 @@ export default class Postbox extends Component {
         });
         console.log(res);
         console.log("여기 맞지???state ====>", this.state.letters);
-      });
+      })
+      .catch(err => console.log(err));
   }
 
+  // 실행이 안되네 바로 .. 패치요청 비동기?에러처리?
   afterDeleteReset = () => {
-    let PostURL = `${SERVER_API}check/postbox`; // 삭제할 때 다시 겟
+    //console.log("실행되니?????????????");
+    let PostURL = `${SERVER_API}/check/postbox`; // 삭제할 때 다시 겟
 
     fetch(PostURL, {
       headers: {
@@ -106,14 +109,16 @@ export default class Postbox extends Component {
       }
     })
       .then(res => res.json())
-      // .then(res => res.toData)
+      //.then(res => res.json())
       .then(res => {
+        // console.log(res);
         this.setState({
           letters: res
         });
-        console.log(res);
-        console.log("여기 맞지???state ====>", this.state.letters);
-      });
+        //console.log(res);
+        //console.log("여기 맞지???state ====>", this.state.letters);
+      })
+      .catch(err => console.log(err));
   };
 
   render() {
@@ -174,7 +179,7 @@ export default class Postbox extends Component {
 
                   <Button
                     onPress={() => {
-                      console.log(this.state.token);
+                      //console.log(this.state.token);
                       fetch(`${SERVER_API}/check/deleteletter`, {
                         method: "DELETE",
                         body: JSON.stringify({
@@ -196,13 +201,10 @@ export default class Postbox extends Component {
                           Alert.alert("", res, [
                             {
                               text: "ok",
-                              onPress: () => {
-                                this.afterDeleteReset();
-                              }
+                              onPress: () => this.afterDeleteReset()
                             }
                           ])
                         )
-
                         .catch(err => console.log(err));
                     }}
                   >
