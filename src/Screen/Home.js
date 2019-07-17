@@ -308,9 +308,9 @@ export default class Home extends Component {
                         "x-access-token": this.state.token
                       }
                     }
-                  ).then(res =>
-                    console.log("!!!!!!!!!!!!!!!!", res, this.state.token)
-                  );
+                  ).then(res => {
+                    console.log("!!!!!!!!!!!!!!!!", res, this.state.token);
+                  });
                 } else {
                   navigation.navigate("Send");
                 }

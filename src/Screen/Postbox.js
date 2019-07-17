@@ -16,7 +16,7 @@ import {
   Spinner
 } from "native-base";
 
-import { StyleSheet, AsyncStorage } from "react-native";
+import { StyleSheet, AsyncStorage, Alert } from "react-native";
 import { SERVER_API } from "../api/API";
 
 const styles = StyleSheet.create({
@@ -74,7 +74,7 @@ export default class Postbox extends Component {
   }
 
   async componentDidMount() {
-    let PostURL = `${SERVER_API}check/postbox`; // 겟인데 한 5분 간격?
+    let PostURL = `${SERVER_API}/check/postbox`; // 겟인데 한 5분 간격?
     const token = await AsyncStorage.getItem("token");
     this.setState({
       token: token
@@ -99,7 +99,7 @@ export default class Postbox extends Component {
 
   afterDeleteReset = () => {
     let PostURL = `${SERVER_API}check/postbox`; // 삭제할 때 다시 겟
-    console.log(token);
+
     fetch(PostURL, {
       headers: {
         "x-access-token": this.state.token
@@ -135,7 +135,6 @@ export default class Postbox extends Component {
         {letters === null ? (
           <Container>
             <Spinner color="blue" />
-            <Text>편지 없음</Text>
           </Container>
         ) : (
           letters.toData.map((ele, idx) => (
@@ -175,14 +174,36 @@ export default class Postbox extends Component {
 
                   <Button
                     onPress={() => {
+                      console.log(this.state.token);
                       fetch(`${SERVER_API}/check/deleteletter`, {
                         method: "DELETE",
-                        body: JSON.stringify({ messages: ele.messages }),
-                        headers: { "x-access-token": this.state.token }
-                      }).then(res => {
-                        alert(res);
-                        this.afterDeleteReset();
-                      });
+                        body: JSON.stringify({
+                          selectmessage: [{ messages: ele.messages }]
+                        }),
+                        headers: {
+                          "x-access-token": this.state.token,
+                          "Content-Type": "application/json"
+                        }
+                      })
+                        .then(res => {
+                          if (res.status === 200) {
+                            return res.json();
+                          } else if (res.status === 403) {
+                            return res.json();
+                          }
+                        })
+                        .then(res =>
+                          Alert.alert("", res, [
+                            {
+                              text: "ok",
+                              onPress: () => {
+                                this.afterDeleteReset();
+                              }
+                            }
+                          ])
+                        )
+
+                        .catch(err => console.log(err));
                     }}
                   >
                     <Text>🗑</Text>

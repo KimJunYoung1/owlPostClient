@@ -39,12 +39,12 @@ export default class Sendcomplete extends Component {
     super(props); // --> slice 안 한 편지 통째로 내용을 받음.
 
     this.state = {
-      sendletters: this.props.navigation.state.params.sendletters
+      //sendletters: this.props.navigation.state.params.sendletter
     };
   }
   render() {
     const { navigation } = this.props;
-    const { sendletters } = this.state;
+    //const { sendletter } = this.state;
     return (
       <Container>
         <Header style={styles.toplogo}>

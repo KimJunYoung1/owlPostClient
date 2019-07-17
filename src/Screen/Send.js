@@ -96,7 +96,7 @@ export default class Send extends Component {
             this.hideAlert();
           }}
           onConfirmPressed={() => {
-            navigation.navigate("Sendcomplete");
+            navigation.navigate("Sendcomplete", { sendletter: sendletter });
           }}
         />
 
