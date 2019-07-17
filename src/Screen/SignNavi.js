@@ -8,6 +8,7 @@ import Mypage from "./Mypage";
 import AddBlackList from "./AddBlackList";
 import DeleteId from "./DeleteId";
 import Letter from "./Letter";
+import Sendcomplete from "./Sendcomplete";
 
 const SignNavigation = createStackNavigator(
   {
@@ -19,7 +20,8 @@ const SignNavigation = createStackNavigator(
     Send: { screen: Send },
     AddBlackList: { screen: AddBlackList },
     DeleteId: { screen: DeleteId },
-    Letter: { screen: Letter }
+    Letter: { screen: Letter },
+    Sendcomplete: { screen: Sendcomplete }
   },
   { initialRouteName: "SignIn", headerMode: "none" }
 );

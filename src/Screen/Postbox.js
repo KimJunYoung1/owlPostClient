@@ -16,7 +16,8 @@ import {
   Spinner
 } from "native-base";
 
-import { StyleSheet } from "react-native";
+import { StyleSheet, AsyncStorage, Alert } from "react-native";
+import { SERVER_API } from "../api/API";
 
 const styles = StyleSheet.create({
   toplogo: {
@@ -72,12 +73,36 @@ export default class Postbox extends Component {
     //
   }
 
-  componentDidMount() {
-    let PostURL = "";
+  async componentDidMount() {
+    let PostURL = `${SERVER_API}/check/postbox`; // 겟인데 한 5분 간격?
+    const token = await AsyncStorage.getItem("token");
+    this.setState({
+      token: token
+    });
+    console.log(token);
+    fetch(PostURL, {
+      headers: {
+        "x-access-token": token
+      }
+    })
+      .then(res => res.json())
+      // .then(res => res.toData)
+      .then(res => {
+        console.log(res);
+        this.setState({
+          letters: res
+        });
+        console.log(res);
+        console.log("여기 맞지???state ====>", this.state.letters);
+      });
+  }
+
+  afterDeleteReset = () => {
+    let PostURL = `${SERVER_API}check/postbox`; // 삭제할 때 다시 겟
 
     fetch(PostURL, {
       headers: {
-        "x-access-token": ""
+        "x-access-token": this.state.token
       }
     })
       .then(res => res.json())
@@ -89,7 +114,7 @@ export default class Postbox extends Component {
         console.log(res);
         console.log("여기 맞지???state ====>", this.state.letters);
       });
-  }
+  };
 
   render() {
     const { navigation } = this.props;
@@ -108,7 +133,9 @@ export default class Postbox extends Component {
         </Header>
 
         {letters === null ? (
-          <Spinner color="blue" />
+          <Container>
+            <Spinner color="blue" />
+          </Container>
         ) : (
           letters.toData.map((ele, idx) => (
             <List
@@ -145,15 +172,42 @@ export default class Postbox extends Component {
                     {ele.time}
                   </Text>
 
-                  <CheckBox
+                  <Button
                     onPress={() => {
-                      // let boxIdx = idx;
-                      // this.setState({
-                      //   [boxIdx]: true
-                      // });
+                      console.log(this.state.token);
+                      fetch(`${SERVER_API}/check/deleteletter`, {
+                        method: "DELETE",
+                        body: JSON.stringify({
+                          selectmessage: [{ messages: ele.messages }]
+                        }),
+                        headers: {
+                          "x-access-token": this.state.token,
+                          "Content-Type": "application/json"
+                        }
+                      })
+                        .then(res => {
+                          if (res.status === 200) {
+                            return res.json();
+                          } else if (res.status === 403) {
+                            return res.json();
+                          }
+                        })
+                        .then(res =>
+                          Alert.alert("", res, [
+                            {
+                              text: "ok",
+                              onPress: () => {
+                                this.afterDeleteReset();
+                              }
+                            }
+                          ])
+                        )
+
+                        .catch(err => console.log(err));
                     }}
-                    checked={false}
-                  />
+                  >
+                    <Text>🗑</Text>
+                  </Button>
                 </Right>
               </ListItem>
             </List>
