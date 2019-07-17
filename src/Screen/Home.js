@@ -8,8 +8,9 @@ import {
   Button,
   Icon
 } from "native-base";
-import { StyleSheet } from "react-native";
+import { StyleSheet, AsyncStorage } from "react-native";
 import AwesomeAlert from "react-native-awesome-alerts";
+import { SERVER_API } from "../api/API";
 //const ServerURL;
 
 const styles = StyleSheet.create({
@@ -80,10 +81,15 @@ export default class Home extends Component {
     });
   };
 
-  componentDidMount() {
-    let AllUserInfo = "";
+  async componentDidMount() {
+    let AllUserInfo = `${SERVER_API}`;
+    const token = await AsyncStorage.getItem("token");
     setInterval(() => {
-      fetch(AllUserInfo)
+      fetch(AllUserInfo, {
+        headers: {
+          "x-access-token": token
+        }
+      })
         .then(res => res.json())
         .then(res => {
           console.log("!!!!!!!!!", res);
@@ -256,12 +262,16 @@ export default class Home extends Component {
                     matchStatus: "매칭 중"
                   });
 
-                  fetch(`=${this.state.myname}`, {
-                    method: "POST",
-                    headers: {
-                      "x-access-token": ""
+                  fetch(
+                    `${SERVER_API}/check/match?nickname=${this.state.myname}`,
+                    {
+                      // ---------------> ㅁㅐ칭요청
+                      method: "POST",
+                      headers: {
+                        "x-access-token": ""
+                      }
                     }
-                  });
+                  ).then(res => console.log("!!!!!!!!!!!!!!!!", res));
                 } else {
                   navigation.navigate("Send");
                 }

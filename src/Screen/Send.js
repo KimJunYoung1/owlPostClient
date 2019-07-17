@@ -96,7 +96,7 @@ export default class Send extends Component {
             this.hideAlert();
           }}
           onConfirmPressed={() => {
-            this.hideAlert();
+            navigation.navigate("Sendcomplete");
           }}
         />
 
@@ -124,3 +124,13 @@ export default class Send extends Component {
     );
   }
 }
+//var d = new Date("2019-02-28")
+//console.log(d)
+// Wed Feb 29 2012 11:00:00 GMT+1100 (EST)
+
+//d.setDate(d.getDate() + 1)
+//console.log(d)
+
+// Thu Mar 01 2012 11:00:00 GMT+1100 (EST)
+
+//07/15/19

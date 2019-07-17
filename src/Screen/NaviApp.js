@@ -7,6 +7,7 @@ import SignIn from "./SignIn";
 import AddBlackList from "./AddBlackList";
 import DeleteId from "./DeleteId";
 import Letter from "./Letter";
+import Sendcomplete from "./Sendcomplete";
 
 const HomeNavigation = createStackNavigator(
   {
@@ -17,7 +18,8 @@ const HomeNavigation = createStackNavigator(
     SignIn: { screen: SignIn },
     AddBlackList: { screen: AddBlackList },
     DeleteId: { screen: DeleteId },
-    Letter: { screen: Letter }
+    Letter: { screen: Letter },
+    Sendcomplete: { screen: Sendcomplete }
   },
   { initialRouteName: "Home", headerMode: "none" }
 );
