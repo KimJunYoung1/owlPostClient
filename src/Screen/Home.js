@@ -160,7 +160,7 @@ export default class Home extends Component {
           }
         })
         .catch(err => console.log(err));
-    }, 60000);
+    }, 5000);
 
     if (this.state.matchComplete && this.state.postStatus) {
       // 여기도 fench 써서 아예 받아올 예정.
@@ -172,20 +172,7 @@ export default class Home extends Component {
       let days = Math.floor(t / (1000 * 60 * 60 * 24));
       let hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       let minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
-      if (t <= 0) {
-        clearInterval(x);
-        this.setState({
-          date: null
-        });
-        this.setState({
-          showAlert: true
-        });
-      } else {
-        this.setState({
-          date:
-            "편지 도착까지, " + days + "일 " + hours + "시간 " + minutes + "분"
-        });
-      }
+
       let x = setInterval(() => {
         if (t <= 0) {
           clearInterval(x);
@@ -208,6 +195,21 @@ export default class Home extends Component {
           });
         }
       }, 60000);
+
+      if (t <= 0) {
+        clearInterval(x);
+        this.setState({
+          date: null
+        });
+        this.setState({
+          showAlert: true
+        });
+      } else {
+        this.setState({
+          date:
+            "편지 도착까지, " + days + "일 " + hours + "시간 " + minutes + "분"
+        });
+      }
       // 처음에 한 번 띄워주고 하는 법을 생각해보자 ㅠ_ㅠ
     }
 
