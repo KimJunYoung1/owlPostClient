@@ -14,7 +14,7 @@ import {
   Thumbnail
 } from "native-base";
 
-import { StyleSheet } from "react-native";
+import { StyleSheet, Alert } from "react-native";
 
 const styles = StyleSheet.create({
   toplogo: {
@@ -50,16 +50,30 @@ export default class Sendcomplete extends Component {
         <Header style={styles.toplogo}>
           <Text style={styles.logotext}>owlPost</Text>
         </Header>
-
+        <Container>
+          <Button
+            rounded
+            dark
+            onPress={() =>
+              Alert.alert("", "부엉이가 출발했어요!", [
+                {
+                  text: "ok"
+                }
+              ])
+            }
+          >
+            <Text>Send</Text>
+          </Button>
+        </Container>
         <Footer>
           <FooterTab>
             <Button
               style={styles.footer}
               onPress={() => {
-                navigation.navigate("Postbox");
+                navigation.navigate("Home");
               }}
             >
-              <Text>Postbox</Text>
+              <Text>Home</Text>
             </Button>
           </FooterTab>
         </Footer>
