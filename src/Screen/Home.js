@@ -70,8 +70,9 @@ export default class Home extends Component {
       // get 요청으로 받을 값이 들어갈 예정.
       date: null,
       // 여기에 도착예정 시간과 현재시간을 계산한 카운터 값이 들어가거나 , 편지도착알림 텍스트가 띄워진다.
-      showAlert: false
+      showAlert: false,
       // true 일 때 alert , 편지시간이 되면 true로 되고 date는 다시 null.
+      check: null
     };
   }
 
@@ -120,6 +121,20 @@ export default class Home extends Component {
             matchStatus: "편지 쓰기",
             myname: res.user.nickname
           });
+          if (res.letters && this.state.check === null) {
+            this.setState({
+              check: res.letters
+            });
+          } else if (res.letters && this.state.check !== null) {
+            if (
+              !this.state.check.includes(res.letters[res.letters.length - 1])
+            ) {
+              this.setState({
+                postStatus: true,
+                check: res.letters
+              });
+            }
+          }
         }
       })
       .catch(err => console.log(err));
@@ -157,6 +172,20 @@ export default class Home extends Component {
               matchStatus: "편지 쓰기",
               myname: res.user.nickname
             });
+            if (res.letters && this.state.check === null) {
+              this.setState({
+                check: res.letters
+              });
+            } else if (res.letters && this.state.check !== null) {
+              if (
+                !this.state.check.includes(res.letters[res.letters.length - 1])
+              ) {
+                this.setState({
+                  postStatus: true,
+                  check: res.letters
+                });
+              }
+            }
           }
         })
         .catch(err => console.log(err));
@@ -177,7 +206,8 @@ export default class Home extends Component {
         if (t <= 0) {
           clearInterval(x);
           this.setState({
-            date: null
+            date: null,
+            postStatus: false
           });
           this.setState({
             showAlert: true
@@ -199,7 +229,8 @@ export default class Home extends Component {
       if (t <= 0) {
         clearInterval(x);
         this.setState({
-          date: null
+          date: null,
+          postStatus: false
         });
         this.setState({
           showAlert: true
