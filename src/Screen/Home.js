@@ -189,7 +189,7 @@ export default class Home extends Component {
           }
         })
         .catch(err => console.log(err));
-    }, 5000);
+    }, 10000);
 
     if (this.state.matchComplete && this.state.postStatus) {
       // 여기도 fench 써서 아예 받아올 예정.
