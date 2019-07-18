@@ -49,6 +49,9 @@ export default class Sendcomplete extends Component {
       <Container>
         <Header style={styles.toplogo}>
           <Text style={styles.logotext}>owlPost</Text>
+          <Button onPress={() => navigation.goBack()}>
+            <Text>뒤로이동</Text>
+          </Button>
         </Header>
         <Container>
           <NumericInput type="up-down" onChange={value => console.log(value)} />
