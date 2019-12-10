@@ -8,5 +8,5 @@ expo start
 ```
 
 
-# 2주 프로젝트 TIL
+# owlPost TIL
 [김준영 블로그](https://program-developer.tistory.com/category/Project/OwlPost)
